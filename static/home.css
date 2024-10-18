@@ -1,0 +1,293 @@
+/* CSS for header  */
+
+.header {
+  width: 100%;
+  position: relative;
+  background-color: #0c3633;
+  height: auto;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.navbar__menu-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+.narbar__item {
+  width: 100%;
+}
+
+.navbar__genre {
+  position: relative;
+}
+
+.navbar__country {
+  position: relative;
+}
+
+.navbar__item-link {
+  font-family: "Roboto", Arial;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  color: white;
+  padding: 0 30px;
+  text-transform: uppercase;
+}
+
+.navbar__item-link:hover {
+  color: var(--button-color);
+}
+
+.navbar__typelist {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 0px;
+  width: 700px;
+  background: #fff;
+  z-index: 10;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: left;
+  list-style: none;
+  overflow: hidden;
+  margin-left: -1%;
+  margin-right: -1%;
+}
+
+.navbar__typelist--item {
+  width: 23%;
+  float: left;
+  margin: 0 1%;
+}
+
+.navbar__typelist--link {
+  text-decoration: none;
+  height: 30px;
+  color: #ccc;
+  line-height: 30px;
+  padding: 0 10px;
+  display: block;
+  font-size: 15px;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__typelist--link:hover {
+  background-color: var(--button-color);
+}
+
+.navbar__item:hover .navbar__typelist {
+  display: block;
+}
+
+.navbar__logo--img {
+  width: 35px;
+  height: 35px;
+}
+
+.navbar__login--link {
+  display: block;
+  font-size: 14px;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #111;
+  background-color: #fff;
+  height: 35px;
+  margin: 5px 0;
+  padding: 0 10px;
+  line-height: 35px;
+}
+
+.navbar__login--link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar__login--icon {
+  color: black;
+  padding: 0 10px 0 0;
+}
+
+.search__title {
+  text-align: center;
+  color: white;
+  margin: 0;
+  font-size: 2.2em;
+  font-weight: 300;
+  padding: 50px 0 10px;
+}
+
+.search__home {
+  height: 70px;
+  position: relative;
+}
+
+.search__home--content {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.search__home_group {
+  width: 900px;
+  background: white;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 35px;
+  align-items: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.search__icon {
+  text-align: center;
+  align-items: center;
+  font-size: 20px;
+  color: #111;
+}
+
+.search__input {
+  flex: 1;
+  outline: none;
+  border: none;
+  font-size: 1.8em;
+  font-weight: 300;
+}
+
+.search__btn {
+  display: block;
+  background-color: var(--button-color);
+  width: 70px;
+  height: 70px;
+  border-radius: 45px;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.search__btn:hover {
+  background-color: var(--button-color-hover);
+}
+
+/* CSS for Content  */
+
+.content {
+  background-color: #fafafa;
+}
+
+.film {
+  display: block;
+}
+
+.text-discription {
+  padding-top: 86px;
+  font-weight: 400;
+  font-size: 1.15em;
+  line-height: 1.4em;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social__label {
+  color: #555;
+  display: inline-block;
+  font-weight: 500;
+  line-height: 12px;
+  margin-right: 0;
+  max-width: 80px;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.social__label--number {
+  font-size: 16px;
+  line-height: 17px;
+  display: block;
+  padding: 0;
+}
+
+.social__label--share {
+  font-size: 9px;
+  line-height: 9px;
+}
+
+.social__item {
+  width: 120px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  font-size: 11px;
+  height: 32px;
+  line-height: 32px;
+  margin-right: 8px;
+  padding: 0 8px;
+  position: relative;
+  text-align: center;
+  top: 0;
+  color: white;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.social__item:hover {
+  transform: translateY(-3px);
+  opacity: 0.9;
+}
+
+.social__item span {
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* CSS for individual social network  */
+
+.facebook {
+  background-color: #4267b2;
+}
+
+.X-twitter {
+  background-color: #000;
+}
+
+.whatsapp {
+  background-color: #25d366;
+}
+
+.messenger {
+  background-color: #448aff;
+}
+
+.reddit {
+  background-color: #ff4500;
+}
+
+.telegram {
+  background-color: #0088cc;
+}
+
+/* CSS for footer  */

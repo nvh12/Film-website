@@ -1,0 +1,184 @@
+/* Reset CSS */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Roboto", Arial;
+  line-height: 1.6rem;
+  font-size: 14px;
+}
+
+/* CSS color */
+:root {
+  --button-color: rgb(27, 175, 105);
+  --button-color-hover: #2ebc5f;
+}
+
+/* CSS frame */
+
+.grid {
+  width: 1400px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.grid__row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.grid__column-8 {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 12.5%;
+}
+
+/* CSS for film-area */
+
+.film {
+  display: block;
+  position: relative;
+}
+
+.film__poster {
+  position: relative;
+}
+
+.film__play {
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #1baf69;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.film__poster:hover .film__play {
+  opacity: 1;
+}
+
+.film__poster::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  background: rgba(22, 22, 22, 0.5);
+  z-index: 1;
+  overflow: hidden;
+  width: 100%;
+  height: 240px;
+  border-radius: 10px;
+  transition: opacity 0.3s ease; /* Đặt thời gian chuyển đổi là 0.3s */
+}
+
+.film__poster:hover::after {
+  opacity: 1;
+}
+
+.film-area__title {
+  color: rgb(17, 17, 17);
+  font-size: 30px !important;
+  line-height: 1.3em;
+  font-weight: 300;
+  padding: 0 0 10px;
+  margin: 0;
+}
+
+.film__quality {
+  color: #111;
+  background: #fff;
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  font-family: arial;
+  font-weight: 600;
+  display: inline-block;
+  padding: 3px 4px;
+  border-radius: 2px;
+}
+
+.film__img {
+  width: 100%;
+  height: 240px;
+  min-height: 100%;
+  border-style: none;
+  border-radius: 10px;
+}
+
+.film__details {
+  margin-bottom: 10px;
+  text-align: center;
+  background: 0;
+  padding: 0;
+}
+
+.film__name {
+  margin-bottom: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.3em;
+}
+
+.film__link {
+  color: black;
+  text-decoration: none;
+}
+
+.film__infor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.film__infor--container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.film__infor--year {
+  font-size: 0.95em;
+  padding-right: 5px;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #666;
+}
+
+.film__infor--minute {
+  font-size: 0.95em;
+  padding-left: 5px;
+}
+
+.film__infor--type {
+  font-size: 0.9em;
+  line-height: 1em;
+  padding: 2px 4px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  float: right;
+}

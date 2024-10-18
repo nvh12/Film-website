@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Create Account</title>
+{% endblock %}
+
+{% block body %}
+<form action="/submit" method="post">
+    <label for = "email">Email</label>
+    <input type = "email" id = "email">
+    <br><br>
+    <label for = "userName">UserName</label>
+    <input type = "text" id = "userName" placeholder = "name" minlength = "8" maxlength = "30"> 
+    <br><br>
+    <label for = "password">Password</label>
+    <input type = "password" id = "password" minlength = "8" required>
+    <br><br>
+{% endblock %}
