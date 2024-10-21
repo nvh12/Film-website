@@ -1,87 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Description</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="static/base.css" />
-    <link rel="stylesheet" href="static/movie-watching.css" />
-  </head>
-  <body>
-    <div class="app">
-      <div class="header">
-        <div class="grid">
-          <div class="header__wrapper">
-            <div class="header__logo">
-              <img
-                src="./assets/images/logo.png"
-                alt="logo"
-                class="header__logo--img"
-              />
-            </div>
-            <div class="header__menu">
-              <ul class="header__menu--list">
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Home</a>
-                </li>
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Genre</a>
-                </li>
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Country</a>
-                </li>
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Movies</a>
-                </li>
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">TV shows</a>
-                </li>
-                <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Top IMDB</a>
-                </li>
-              </ul>
-            </div>
-            <div class="header__right">
-              <form action="" class="header__right--search">
-                <i
-                  class="fa-solid fa-magnifying-glass header__right--search-icon"
-                ></i>
-                <input
-                  type="text"
-                  class="header__right--input"
-                  placeholder="Enter keywords"
-                />
-              </form>
-              <div class="header__right--login">
-                <i class="fa-regular fa-user header__right--login-icon"></i>
-                Login
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="content"></div>
-      <div class="footer"></div>
-    </div>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Watching</title>
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

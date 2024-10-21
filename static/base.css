@@ -37,16 +37,61 @@ html {
   padding-left: 5px;
   padding-right: 5px;
   width: 12.5%;
+  max-width: 160px;
+}
+/* CSS for login, logout, register */
+.navbar__login-container{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.navbar__login--link {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #111;
+  background-color: #fff;
+  height: 35px;
+  margin: 5px 0;
+  padding: 0 10px;
+  line-height: 35px;
+}
+
+.navbar__login--link:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar__login--icon {
+  color: black;
+  padding: 0 10px 0 0;
 }
 
 /* CSS for film-area */
+.film-area .grid__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.film-area .grid__column-8{
+  flex: 1 1 calc(25% - 16px);
+  max-width: 160px;
+  box-sizing: border-box;
+}
 
 .film {
   display: block;
+  width: 100%;
   position: relative;
+  margin: 0 auto;
 }
 
 .film__poster {
+  width: auto;
+  height: auto;
   position: relative;
 }
 

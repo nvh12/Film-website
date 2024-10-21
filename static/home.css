@@ -25,11 +25,7 @@
   width: 100%;
 }
 
-.navbar__genre {
-  position: relative;
-}
-
-.navbar__country {
+.navbar__genre, .navbar__country {
   position: relative;
 }
 
@@ -97,8 +93,15 @@
   height: 35px;
 }
 
+.navbar__login-container{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .navbar__login--link {
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 14px;
   border-radius: 2px;
   text-decoration: none;
