@@ -53,10 +53,10 @@
 .navbar__typelist {
   display: none;
   position: absolute;
-  top: 25px;
+  top: 20px;
   left: 0px;
   width: 700px;
-  background: green;
+  background: white;
   z-index: 10;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   padding: 10px;
@@ -65,6 +65,7 @@
   overflow: hidden;
   margin-left: -1%;
   margin-right: -1%;
+  text-transform: none;
 }
 
 .navbar__typelist--item {
@@ -91,7 +92,7 @@
   background-color: var(--button-color);
 }
 
-.navbar__item:hover .navbar__typelist {
+.navbar__genre:hover .navbar__typelist {
   display: block;
 }
 
@@ -103,6 +104,9 @@
 .header__right {
   display: flex;
   position: relative;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .header__right--search {

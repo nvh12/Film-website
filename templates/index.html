@@ -105,16 +105,16 @@
             {% else %}
             <div class="navbar__login-container">
               <div class="navbar__login">
-                <a href="{{ url_for('login')}}" class="navbar__login--link">
+                <button class="navbar__login--link" id="loginBtn">
                   <i class="fa-regular fa-user navbar__login--icon"></i>
                   Login
-                </a>
+                </button>
               </div>
               <div class="navbar__login">
-                <a href="{{ url_for('register')}}" class="navbar__login--link">
+                <button class="navbar__login--link" id="registerBtn">
                   <i class="fa-regular fa-user navbar__login--icon"></i>
                   Register
-                </a>
+                </button>
               </div>
             </div>
             {% endif %}
@@ -133,7 +133,7 @@
                     placeholder="Enter keywords..."
                   />
                 </div>
-                <button type="button" class="search__btn" id="loginBtn">
+                <button type="button" class="search__btn">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </form>

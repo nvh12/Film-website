@@ -57,6 +57,8 @@ html {
   margin: 5px 0;
   padding: 0 10px;
   line-height: 35px;
+  border: none;
+  outline: none;
 }
 
 .navbar__login--link:hover {
