@@ -1,3 +1,7 @@
+.app {
+  z-index: 0;
+}
+
 /* CSS for header  */
 
 .header {
@@ -19,13 +23,15 @@
   justify-content: space-between;
   align-items: center;
   list-style: none;
+  padding-left: 120px;
 }
 
 .narbar__item {
   width: 100%;
 }
 
-.navbar__genre, .navbar__country {
+.navbar__genre,
+.navbar__country {
   position: relative;
 }
 
@@ -47,7 +53,7 @@
   display: none;
   position: absolute;
   top: 25px;
-  left: 0px;
+  left: 50%;
   width: 700px;
   background: #fff;
   z-index: 10;
@@ -58,6 +64,7 @@
   overflow: hidden;
   margin-left: -1%;
   margin-right: -1%;
+  translate: -50% 0;
 }
 
 .navbar__typelist--item {
@@ -93,7 +100,7 @@
   height: 35px;
 }
 
-.navbar__login-container{
+.navbar__login-container {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -294,3 +301,45 @@
 }
 
 /* CSS for footer  */
+
+/* CSS for login/register form  */
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.modal__form {
+  position: relative;
+  margin: auto;
+  width: 300px;
+  height: 300px;
+  background-color: red;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+#closeForm {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  border-radius: 50%;
+  line-height: 40px;
+  translate: 50% -50%;
+  cursor: pointer;
+  border: none;
+}

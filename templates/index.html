@@ -41,7 +41,12 @@
             </div>
             <ul class="navbar__menu-list">
               <li class="navbar__item">
-                <a class="navbar__item-link" href="javascript:void(0)" onclick="location.reload()">Home</a>
+                <a
+                  class="navbar__item-link"
+                  href="javascript:void(0)"
+                  onclick="location.reload()"
+                  >Home</a
+                >
               </li>
               <li class="navbar__item navbar__genre">
                 <a class="navbar__item-link" href="">Genre</a>
@@ -76,7 +81,11 @@
                 <a class="navbar__item-link" href="">Movies</a>
               </li>
               <li class="navbar__item">
-                <a class="navbar__item-link" href="https://www.imdb.com/chart/top/">Top IMDB</a>
+                <a
+                  class="navbar__item-link"
+                  href="https://www.imdb.com/chart/top/"
+                  >Top IMDB</a
+                >
               </li>
             </ul>
             {% if current_user.is_authenticated %}
@@ -89,7 +98,7 @@
               </div>
               <div class="navbar__login">
                 <a class="navbar__login--link" href="{{ url_for('logout')}}">
-                  Logout  
+                  Logout
                 </a>
               </div>
             </div>
@@ -124,7 +133,7 @@
                     placeholder="Enter keywords..."
                   />
                 </div>
-                <button class="search__btn">
+                <button type="button" class="search__btn" id="loginBtn">
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </form>
@@ -179,7 +188,7 @@
             </div>
             <div class="grid__row">
               {% for i in range(16) %}
-               <div class="grid__column-8">
+              <div class="grid__column-8">
                 <a href="" class="film">
                   <div class="film__poster">
                     <div class="film__quality">HD</div>
@@ -219,7 +228,7 @@
             </div>
             <div class="grid__row">
               {% for i in range(16) %}
-               <div class="grid__column-8">
+              <div class="grid__column-8">
                 <a href="" class="film">
                   <div class="film__poster">
                     <div class="film__quality">HD</div>
@@ -259,7 +268,7 @@
             </div>
             <div class="grid__row">
               {% for i in range(16) %}
-               <div class="grid__column-8">
+              <div class="grid__column-8">
                 <a href="" class="film">
                   <div class="film__poster">
                     <div class="film__quality">HD</div>
@@ -298,5 +307,20 @@
         <div class="grid"></div>
       </div>
     </div>
+    <div class="modal hidden" id="loginForm">
+      <div class="modal__form">
+        <button type="button" id="closeLoginForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+    </div>
+    <div class="modal hidden" id="registerForm">
+      <div class="modal__form">
+        <button type="button" id="closeRegisterForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+    </div>
+    <script src="/static/sciprt.js"></script>
   </body>
 </html>
