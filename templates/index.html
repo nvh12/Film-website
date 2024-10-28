@@ -312,6 +312,26 @@
         <button type="button" id="closeLoginForm">
           <i class="fa-solid fa-x"></i>
         </button>
+        <div class="container" style="max-width: 400px; margin: auto; background-color: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+          <h2 style="text-align: center; color: #333;">Login</h2>
+          <form method="POST" class="form-signin" style="display: flex; flex-direction: column; gap: 20px;">
+              {{ loginForm.hidden_tag() }}
+              <div style="display: flex; flex-direction: column;">
+                  {{ loginForm.username.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ loginForm.username(class="form-control", placeholder="Enter Username", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+      
+              <div style="display: flex; flex-direction: column;">
+                  {{ loginForm.password.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ loginForm.password(class="form-control", placeholder="Enter Password", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+              
+              <a href="{{ url_for('index')}}" style="display: flex; flex-direction: column;">Don't have an account? Register</a>
+      
+              {{ loginForm.submit(class="btn btn-primary", style="padding: 10px; background-color: #007bff; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px")}}
+              
+            </form>
+        </div>
       </div>
     </div>
     <div class="modal hidden" id="registerForm">
@@ -319,6 +339,37 @@
         <button type="button" id="closeRegisterForm">
           <i class="fa-solid fa-x"></i>
         </button>
+        <div class="container" style="max-width: 400px; margin: auto; background-color: #f8f9fa; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+          <h2 style="text-align: center; color: #333;">Create Account</h2>
+          <form method="POST" class="form-register" style="display: flex; flex-direction: column; gap: 20px;">
+              
+              {{ registerForm.hidden_tag() }}
+              <div style="display: flex; flex-direction: column;">
+                  {{ registerForm.username.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ registerForm.username(class="form-control", placeholder="Enter Username", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+      
+              <div style="display: flex; flex-direction: column;">
+                  {{ registerForm.email.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ registerForm.email(class="form-control", placeholder="Enter Email", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+      
+              <div style="display: flex; flex-direction: column;">
+                  {{ registerForm.password1.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ registerForm.password1(class="form-control", placeholder="Enter Password", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+      
+              <div style="display: flex; flex-direction: column;">
+                  {{ registerForm.password2.label(style="color: #333; font-weight: bold; margin-bottom: 5px;") }}
+                  {{ registerForm.password2(class="form-control", placeholder="Confirm Password", style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
+              </div>
+      
+              <a href="{{ url_for('index')}}" style="display: flex; flex-direction: column;">Already have an account? Login</a>
+      
+              {{ registerForm.submit(class="btn btn-primary", style="padding: 10px; background-color: #007bff; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px")}}
+              
+          </form>
+        </div>
       </div>
     </div>
     <script src="/static/sciprt.js"></script>

@@ -7,7 +7,10 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, UserMixin
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db1.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Users.db'
+app.config['SQLALCHEMY_BINDS'] = {
+    'movies' : 'sqlite:///Movies.db'
+}
 app.config['SECRET_KEY'] = '2a0f76e24979a57e'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -37,6 +40,18 @@ class User(db.Model, UserMixin):
     def checkPassword(self, attemptedPassword):
         return bcrypt.check_password_hash(self.passwordHash, attemptedPassword)
 
+class Movie(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    movie_title = db.Column(db.String, nullable = False)
+    genres = db.Column(db.String, nullable = False)
+    director_name = db.Column(db.String, nullable = False)
+    actor_1_name = db.Column(db.String, nullable = False)
+    actor_2_name = db.Column(db.String, nullable = False)
+    actor_3_name = db.Column(db.String, nullable = False)
+    release_date = db.Column(db.Date)
+    poster_url = db.Column(db.String, nullable = False)
+    over_view = db.Column(db.String)
+
 #Forms
 class RegisterForm(FlaskForm):
     username = StringField(label='Username: ', validators=[Length(min=4, max=40), DataRequired()])
@@ -56,43 +71,38 @@ with app.app_context():
 
 #Routes
 #home
-@app.route('/')
+@app.route('/', methods = ['POST', 'GET'])
 def index():
-    return render_template('index.html')
-
-#create account
-@app.route('/register', methods = ['POST', 'GET'])
-def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        newUser = User(username = form.username.data, email = form.email.data, password = form.password1.data)
+    registerForm = RegisterForm()
+    if registerForm.validate_on_submit():
+        newUser = User(username = registerForm.username.data, email = registerForm.email.data, password = registerForm.password1.data)
         db.session.add(newUser)
         db.session.commit()
         return redirect(url_for('index'))
-    if form.errors != {}:
-        for err_msg in form.errors.values():
+    if registerForm.errors != {}:
+        for err_msg in registerForm.errors.values():
             flash(f'Error: {err_msg}', category='danger')
-    return render_template('form.html', form = form)
-
-#login
-@app.route('/login', methods = ['POST', 'GET'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        attemptedUser = User.query.filter_by(username = form.username.data).first()
-        if attemptedUser and attemptedUser.checkPassword(attemptedPassword = form.password.data):
+    loginForm = LoginForm()
+    if loginForm.validate_on_submit():
+        attemptedUser = User.query.filter_by(username = loginForm.username.data).first()
+        if attemptedUser and attemptedUser.checkPassword(attemptedPassword = loginForm.password.data):
             login_user(attemptedUser)
             flash('You are logged in as {attemptedUser.username}!', category = 'success')
             return redirect(url_for('index'))
         else:
             flash('Incorrect username or password!', category = 'danger')
-    return render_template('login.html', form = form)
+    return render_template('index.html', registerForm = registerForm, loginForm = loginForm)
 
 @app.route('/logout')
 def logout():
     logout_user()
     flash('You have been logged out!', category = 'info')
     return redirect(url_for('index'))
+
+#movies
+@app.route('/movies')
+def movies():
+    return render_template('movies.html')
 
 #watching
 @app.route('/watching')
