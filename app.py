@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Users.db'
 app.config['SQLALCHEMY_BINDS'] = {
     'movies' : 'sqlite:///Movies.db'
 }
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '2a0f76e24979a57e'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -41,6 +42,8 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.passwordHash, attemptedPassword)
 
 class Movie(db.Model):
+    __bind_key__ = 'movies'
+    __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key = True)
     movie_title = db.Column(db.String, nullable = False)
     genres = db.Column(db.String, nullable = False)
@@ -50,7 +53,7 @@ class Movie(db.Model):
     actor_3_name = db.Column(db.String, nullable = False)
     release_date = db.Column(db.Date)
     poster_url = db.Column(db.String, nullable = False)
-    over_view = db.Column(db.String)
+    overview = db.Column(db.String)
 
 #Forms
 class RegisterForm(FlaskForm):
@@ -64,10 +67,6 @@ class LoginForm(FlaskForm):
     username = StringField(label='Username: ', validators=[Length(min=4, max=40), DataRequired()])
     password = PasswordField(label='Password: ', validators=[Length(min=8), DataRequired()])
     submit = SubmitField(label='Log in')
-
-#Create database tables
-with app.app_context():
-    db.create_all()
 
 #Routes
 #home
@@ -102,7 +101,21 @@ def logout():
 #movies
 @app.route('/movies')
 def movies():
-    return render_template('movies.html')
+    noMovies = 48
+    page = request.args.get('page', default = 1, type  = int)
+    movieQuery = Movie.query.paginate(page = page, per_page = noMovies, error_out = False)
+    start = max(1, page - 5)
+    end = min(movieQuery.pages, page + 5)
+    return render_template('movies.html',
+                           movies = movieQuery.items,
+                           curPage = movieQuery.page,
+                           next = movieQuery.has_next,
+                           prev = movieQuery.has_prev,
+                           nextPage = movieQuery.next_num,
+                           prevPage = movieQuery.prev_num,
+                           noPages = movieQuery.pages,
+                           start = start,
+                           end = end,)
 
 #watching
 @app.route('/watching')

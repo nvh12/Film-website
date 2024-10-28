@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="static/home.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
 <title>Movies</title>
 {% endblock %}
 
@@ -14,28 +14,28 @@
             <div class="film-area__tabs"></div>
         </div>
         <div class="grid__row">
-            {% for i in range(16) %}
+            {% for movie in movies %}
             <div class="grid__column-8">
                 <a href="" class="film">
                     <div class="film__poster">
                         <div class="film__quality">HD</div>
-                        <img src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                            alt="" class="film__img" />
+                        <img src="{{ movie.poster_url }}"
+                            alt="{{ movie.movie_title }}" class="film__img" />
                         <div class="film__play">
                             <i class="fa fa-play"></i>
                         </div>
                     </div>
                     <div class="film__details">
                         <h3 class="film__name">
-                            <a href="" class="film__link" title="hehe">
-                                Venom:Till dead to they part
+                            <a href="" class="film__link" title="{{ movie.movie_title }}">
+                                {{ movie.movie_title }}
                             </a>
                         </h3>
                         <div class="film__infor">
                             <div class="film__infor--container">
-                                <span class="film__infor--year">2024</span>
+                                <span class="film__infor--year">{{ movie.release_date}}</span>
                                 <span class="dot"></span>
-                                <span class="film__infor--minute">120m</span>
+                                <span class="film__infor--minute">Not available</span>
                             </div>
                             <span class="film__infor--type">Movie</span>
                         </div>
@@ -45,6 +45,19 @@
             {% endfor %}
         </div>
     </section>
+</div>
+<div class = "pagination">
+    {% if  prev %}
+        <a href = "{{ url_for('movies', page = prevPage) }}">Previous</a>
+    {% endif %}
+    {% for page in range(start, end) %}
+        <a href = "{{ url_for('movies', page = page) }}" class = "{% if page == curPage %}active{% endif %}">
+            {{ page }}
+        </a>
+    {% endfor %}
+    {% if next %}
+        <a href = "{{ url_for('movies', page = nextPage) }}">Next</a>
+    {% endif %}
 </div>
 
 {% endblock %}

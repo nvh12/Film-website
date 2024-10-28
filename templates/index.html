@@ -24,8 +24,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="static/base.css" />
-    <link rel="stylesheet" href="static/home.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
   </head>
   <body>
     <div class="app">
@@ -78,7 +78,7 @@
                 </ul>
               </li>
               <li class="navbar__item">
-                <a class="navbar__item-link" href="">Movies</a>
+                <a class="navbar__item-link" href="{{ url_for('movies')}}">Movies</a>
               </li>
               <li class="navbar__item">
                 <a

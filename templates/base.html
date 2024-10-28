@@ -23,8 +23,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="static/base.css" />
-    <link rel="stylesheet" href="static/movie-watching.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'movie-watching.css')}}" />
     {% block head %} {% endblock %}
   </head>
   <body>
@@ -74,7 +74,7 @@
                   </ul>
                 </li>
                 <li class="header__menu--item">
-                  <a href="" class="header__menu--link">Movies</a>
+                  <a href="{{ url_for('movies')}}" class="header__menu--link">Movies</a>
                 </li>
                 <li class="header__menu--item">
                   <a href="https://www.imdb.com/chart/top/" class="header__menu--link">Top IMDB</a>
