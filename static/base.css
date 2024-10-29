@@ -78,7 +78,7 @@ html {
   gap: 16px;
 }
 
-.film-area .grid__column-8{
+.film-area .grid__column-8 {
   flex: 1 1 calc(25% - 16px);
   max-width: 160px;
   box-sizing: border-box;
@@ -227,4 +227,29 @@ html {
   border: 1px solid #aaa;
   border-radius: 3px;
   float: right;
+}
+
+.closeButton {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  color: #111;
+  margin: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  z-index: 3;
+  text-align: center;
+  line-height: 30px;
+  display: inline-block;
+  padding: 0;
+  opacity: 1;
+  text-shadow: none;
+  border: none;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.9);
 }

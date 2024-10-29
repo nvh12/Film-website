@@ -325,8 +325,7 @@
   height: 300px;
   background-color: white;
   border-radius: 10px;
-  top: 50%;
-  translate: 0 -50%;
+  translate: 0 50%;
 }
 
 #closeForm {
