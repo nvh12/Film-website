@@ -1,136 +1,123 @@
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'movie-description.css')}}" />
-</head>
+{% block head %}
+<title>Movie Description</title>
+<link rel="stylesheet" href="{{ url_for('static', filename = 'movie-description.css')}}" />
+{% endblock %}
 
-<body>
+{% block content %}
+<div class="content">
+    <div class="prebread">
+        <li class="prelist">
+            <a href="Home" title="Home">Home /</a>
+        </li>
+        <li class="prelist">
+            <a href="Movies" title="Movies">Movies /</a>
+        </li>
+        <li class="prelist">
+            <a href="MovieName" title="Movie Name">Movie Name</a>
+        </li>
+    </div>
+    <div class="cover_img"
+        style="background-image: url(https://f.woowoowoowoo.net/resize/178x268/4a/e4/4ae472fe454bc93d290f5099568f30af/4ae472fe454bc93d290f5099568f30af.jpg);">
+    </div>
+    <div class="container">
 
-    {% extends 'base.html' %}
-
-    {% block head %}
-    <title>Movie Description</title>
-    {% endblock %}
-
-    <!-- {% block content %} -->
-    <div class="content">
-        <div class="prebread">
-            <li class="prelist">
-                <a href="Home" title="Home">Home /</a>
-            </li>
-            <li class="prelist">
-                <a href="Movies" title="Movies">Movies /</a>
-            </li>
-            <li class="prelist">
-                <a href="MovieName" title="Movie Name">Movie Name</a>
-            </li>
+        <div class="kolmj">
+            <a href="linkphim" class="d_play">
+                <i class="fa fa-play"></i></a>
         </div>
-        <div class="cover_img"
-            style="background-image: url(https://f.woowoowoowoo.net/resize/178x268/4a/e4/4ae472fe454bc93d290f5099568f30af/4ae472fe454bc93d290f5099568f30af.jpg);">
-        </div>
-        <div class="container">
 
-            <div class="kolmj">
-                <a href="linkphim" class="d_play">
-                    <i class="fa fa-play"></i></a>
-            </div>
-
-            <div class="d_detail_page_infor">
-                <div class="d_content">
-                    <div class="d_poster">
-                        <div>
-                            <img src="https://f.woowoowoowoo.net/resize/178x268/be/37/be379bbe1ac354904aa683b733e44a51/be379bbe1ac354904aa683b733e44a51.jpg"
-                                title="Film Title">
-                        </div>
-                        <div class="d_rating">
-                            <div class="rating_result">
-                                <span>0.0</span>
-                                / 0 voted
-                            </div>
-                            <button onclick="likemovie" class="d_likebutton">
-                                <i class="fa-solid fa-thumbs-up"></i>
-                                Like
-                            </button>
-                            <button onclick="dislikemovie" class="d_dislikebutton">
-                                <i class="fa-solid fa-thumbs-down"></i>
-                                Dislike
-                            </button>
-                        </div>
+        <div class="d_detail_page_infor">
+            <div class="d_content">
+                <div class="d_poster">
+                    <div>
+                        <img src="https://f.woowoowoowoo.net/resize/178x268/be/37/be379bbe1ac354904aa683b733e44a51/be379bbe1ac354904aa683b733e44a51.jpg"
+                            title="Film Title">
                     </div>
-                    <div class="d_right">
-                        <div class="haicainut">
-                            <a class="d_watchnow" href="linkphimlacaikogi" title="Watch now">
-                                <i class="fa fa-play mr-2"></i>
-                                Watch now
-                            </a>
+                    <div class="d_rating">
+                        <div class="rating_result">
+                            <span>0.0</span>
+                            / 0 voted
+                        </div>
+                        <button onclick="likemovie" class="d_likebutton">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            Like
+                        </button>
+                        <button onclick="dislikemovie" class="d_dislikebutton">
+                            <i class="fa-solid fa-thumbs-down"></i>
+                            Dislike
+                        </button>
+                    </div>
+                </div>
+                <div class="d_right">
+                    <div class="haicainut">
+                        <a class="d_watchnow" href="linkphimlacaikogi" title="Watch now">
+                            <i class="fa fa-play mr-2"></i>
+                            Watch now
+                        </a>
 
-                            <a class="addtofavorite" onclick="add_favorite">
-                                <i class="fa fa-plus mr-2"></i>
-                                Add to favorite
-                            </a>
-                        </div>
-                        <h2 class="d_heading-name">Ten Phim HeHe</h2>
-                        <div class="d_stats">
-                            <button class="button_trailer">
-                                <i class="fas fa-video mr-2"></i>
-                                Trailer
-                            </button>
-                            <button class="button_quality">
-                                <strong>HD</strong>
-                            </button>
-                            <span>IMDB:10.0</span>
-                        </div>
-                        <div class="d_description">Tegan Quin (from Tegan and Sara) has been the victim of identity
-                            theft
-                            and an
-                            ongoing catfishing scam for over 15 years. While investigating, she shares for the first
-                            time,
-                            how she
-                            was ensnared in toxic fan culture that revealed the dark side of fame.</div>
-                        <div class="d_elements">
-                            <div class="ReGeCa">
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Release:</strong> </span>
-                                    2024-09-05
-                                </div>
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Genre:</strong> </span>
-                                    <a href="genre/documentary">Documentary</a>
-                                </div>
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Casts:</strong> </span>
-                                    <a href="cast/tegan-quin">Tegan Quin</a>
-                                    <a href="cast/sara-quin">Sara Quin</a>
-                                </div>
+                        <a class="addtofavorite" onclick="add_favorite">
+                            <i class="fa fa-plus mr-2"></i>
+                            Add to favorite
+                        </a>
+                    </div>
+                    <h2 class="d_heading-name">Ten Phim HeHe</h2>
+                    <div class="d_stats">
+                        <button class="button_trailer">
+                            <i class="fas fa-video mr-2"></i>
+                            Trailer
+                        </button>
+                        <button class="button_quality">
+                            <strong>HD</strong>
+                        </button>
+                        <span>IMDB:10.0</span>
+                    </div>
+                    <div class="d_description">Tegan Quin (from Tegan and Sara) has been the victim of identity
+                        theft
+                        and an
+                        ongoing catfishing scam for over 15 years. While investigating, she shares for the first
+                        time,
+                        how she
+                        was ensnared in toxic fan culture that revealed the dark side of fame.</div>
+                    <div class="d_elements">
+                        <div class="ReGeCa">
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Release:</strong> </span>
+                                2024-09-05
                             </div>
-                            <div class="DuCoPr">
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Duration:</strong> </span>
-                                    100min
-                                </div>
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Country:</strong> </span>
-                                    <a href="country/US">United States</a>
-                                </div>
-                                <div class="row-line">
-                                    <span class="d-type"> <strong>Production:</strong> </span>
-                                    <a href="production/story-syndicate"> Story Syndicate</a>
-                                    <a href="production/carr-lot-productions"> Carr Lot Productions</a>
-                                </div>
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Genre:</strong> </span>
+                                <a href="genre/documentary">Documentary</a>
+                            </div>
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Casts:</strong> </span>
+                                <a href="cast/tegan-quin">Tegan Quin</a>
+                                <a href="cast/sara-quin">Sara Quin</a>
+                            </div>
+                        </div>
+                        <div class="DuCoPr">
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Duration:</strong> </span>
+                                100min
+                            </div>
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Country:</strong> </span>
+                                <a href="country/US">United States</a>
+                            </div>
+                            <div class="row-line">
+                                <span class="d-type"> <strong>Production:</strong> </span>
+                                <a href="production/story-syndicate"> Story Syndicate</a>
+                                <a href="production/carr-lot-productions"> Carr Lot Productions</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
         </div>
-    </div>
-    <div class="footer"></div>
-    <!-- {% endblock %} -->
-</body>
 
-</html>
+    </div>
+</div>
+<div class="footer"></div>
+{% endblock %}
