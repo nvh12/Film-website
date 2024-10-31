@@ -1,22 +1,20 @@
+{% extends 'base.html' %}
+
+<!-- {% block head %} -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Movie Description</title>
     <link rel="stylesheet" href="{{ url_for('static', filename = 'movie-description.css')}}" />
     <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
 </head>
+<!-- {% endblock %} -->
+
+<!-- {% block content %} -->
 
 <body>
-
-    {% extends 'base.html' %}
-
-    {% block head %}
-    <title>Movie Description</title>
-    {% endblock %}
-
-    <!-- {% block content %} -->
     <div class="content">
         <div class="prebread">
             <li class="prelist">
