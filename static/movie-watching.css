@@ -148,3 +148,27 @@
   font-size: 14px;
   text-align: center;
 }
+
+/* CSS container */
+.vd-prebread {
+  padding-left: 56px;
+  padding-bottom: 10px;
+}
+
+.vd-prelist {
+  list-style: none;
+  display: inline-block;
+}
+
+.vd-prelist a {
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  font-size: medium;
+  text-decoration: none;
+}
+
+.videoplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

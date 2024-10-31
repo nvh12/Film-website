@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename = 'movie-description.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
 </head>
 
 <body>
@@ -129,8 +130,28 @@
 
         </div>
     </div>
-    <div class="footer"></div>
-    <!-- {% endblock %} -->
+    <div class="footer">
+        <div class="f-container">
+            <div class="f-logo">
+                <img src="https://zoechip.cc/images/group_1/theme_3/logo.png?v=0.1" class="logo">
+                <p>© Zoechip</p>
+            </div>
+            <div class="f-about">
+                <div class="f-text">
+                    Zoechip is a Free Movies streaming site with zero ads. We let you watch movies online without having
+                    to
+                    register or paying, with over 10000 movies and TV-Series. You can also Download full movies from
+                    Zoechip
+                    and watch it later if you want. </div>
+                <div class="f-menu"> Android App - Terms of service - Contact - Sitemap - FAQ</div>
+            </div>
+            <div class="f-notice">
+                <span class="f-notice-span">Zoechip does not store any files on our server, we only linked to the media
+                    which is hosted on 3rd
+                    party services.</span>
+            </div>
+        </div>
+        <!-- {% endblock %} -->
 </body>
 
 </html>
