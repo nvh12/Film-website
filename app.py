@@ -54,6 +54,7 @@ class Movie(db.Model):
     release_date = db.Column(db.Date)
     poster_url = db.Column(db.String, nullable = False)
     overview = db.Column(db.String)
+    runtime = db.Column(db.Integer)
 
 #Forms
 class RegisterForm(FlaskForm):

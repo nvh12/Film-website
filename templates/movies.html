@@ -19,8 +19,7 @@
                 <a href="" class="film">
                     <div class="film__poster">
                         <div class="film__quality">HD</div>
-                        <img src="{{ movie.poster_url }}"
-                            alt="{{ movie.movie_title }}" class="film__img" />
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
                         <div class="film__play">
                             <i class="fa fa-play"></i>
                         </div>
@@ -33,9 +32,21 @@
                         </h3>
                         <div class="film__infor">
                             <div class="film__infor--container">
-                                <span class="film__infor--year">{{ movie.release_date}}</span>
+                                <span class="film__infor--year">
+                                    {% if movie.release_date %}
+                                    {{ movie.release_date.strftime('%Y') }}
+                                    {% else %}
+                                    Unknown
+                                    {% endif %}
+                                </span>
                                 <span class="dot"></span>
-                                <span class="film__infor--minute">Not available</span>
+                                <span class="film__infor--minute">
+                                    {% if movie.runtime == 0 %}
+                                    Unknown
+                                    {% else %}
+                                    {{ movie.runtime }} min
+                                    {% endif %}
+                                </span>
                             </div>
                             <span class="film__infor--type">Movie</span>
                         </div>
@@ -46,17 +57,17 @@
         </div>
     </section>
 </div>
-<div class = "pagination">
-    {% if  prev %}
-        <a href = "{{ url_for('movies', page = prevPage) }}">Previous</a>
+<div class="pagination">
+    {% if prev %}
+    <a href="{{ url_for('movies', page = prevPage) }}">Previous</a>
     {% endif %}
     {% for page in range(start, end) %}
-        <a href = "{{ url_for('movies', page = page) }}" class = "{% if page == curPage %}active{% endif %}">
-            {{ page }}
-        </a>
+    <a href="{{ url_for('movies', page = page) }}" class="{% if page == curPage %}active{% endif %}">
+        {{ page }}
+    </a>
     {% endfor %}
     {% if next %}
-        <a href = "{{ url_for('movies', page = nextPage) }}">Next</a>
+    <a href="{{ url_for('movies', page = nextPage) }}">Next</a>
     {% endif %}
 </div>
 
