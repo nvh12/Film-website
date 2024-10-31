@@ -172,3 +172,54 @@
   justify-content: center;
   align-items: center;
 }
+
+/* CSS footer */
+.footer {
+  background: #000;
+  padding: 40px 0;
+  color: #b9b9b9;
+  position: relative;
+
+}
+
+.f-container {
+  position: relative;
+  height: 90px;
+  width: 1400px;
+  margin: 0 auto;
+}
+
+.f-about {
+  display: inline-block;
+  width: 650px;
+  padding-left: 150px;
+}
+
+.f-text {
+  margin-bottom: 15px;
+  font: 15px Arial;
+}
+
+.f-menu {
+  color: #fff;
+  font: 14px Arial;
+}
+
+.f-notice {
+  float: right;
+  width: 380px;
+  font: 14px Arial;
+  border: 1px solid #393939;
+  padding: 10px;
+  line-height: 1.3em;
+}
+
+
+
+.f-logo {
+  display: inline-block;
+}
+
+.logo {
+  height: 46px;
+}
