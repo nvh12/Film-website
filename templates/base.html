@@ -26,7 +26,7 @@
       <div class="grid">
         <div class="header__wrapper">
           <div class="header__logo">
-            <img src="static/images/logo.png" alt="logo" class="header__logo--img" />
+            <img src="/static/images/logo.png" alt="logo" class="header__logo--img" />
           </div>
           <div class="header__menu">
             <ul class="header__menu--list">
@@ -71,9 +71,9 @@
             </ul>
           </div>
           <div class="header__right">
-            <form action="" class="header__right--search">
+            <form action="" class="header__right--search" method = "get">
               <i class="fa-solid fa-magnifying-glass header__right--search-icon"></i>
-              <input type="text" class="header__right--input" placeholder="Enter keywords" />
+              <input type="text" class="header__right--input" name = "search" placeholder="Enter keywords" />
             </form>
             {% if current_user.is_authenticated %}
             <div class="navbar__login-container">

@@ -9,13 +9,14 @@
 <div class="content">
     <div class="prebread">
         <li class="prelist">
-            <a href="Home" title="Home">Home /</a>
+            <a href="{{ url_for('index')}}" title="Home">Home /</a>
         </li>
         <li class="prelist">
-            <a href="Movies" title="Movies">Movies /</a>
+            <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
         </li>
+        {% set name = movie.movie_title %}
         <li class="prelist">
-            <a href="MovieName" title="Movie Name">Movie Name</a>
+            <a href="#" onclick="window.location.href='{{ url_for('description', movie_title=movie.movie_title) }}'; return false;" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
         </li>
     </div>
     <div class="cover_img"
@@ -24,7 +25,7 @@
     <div class="container">
 
         <div class="kolmj">
-            <a href="linkphim" class="d_play">
+            <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" class="d_play">
                 <i class="fa fa-play"></i></a>
         </div>
 
@@ -32,7 +33,7 @@
             <div class="d_content">
                 <div class="d_poster">
                     <div>
-                        <img src="https://f.woowoowoowoo.net/resize/178x268/be/37/be379bbe1ac354904aa683b733e44a51/be379bbe1ac354904aa683b733e44a51.jpg"
+                        <img src="{{ movie.poster_url }}" style="width: 178px; height: 268px;"
                             title="Film Title">
                     </div>
                     <div class="d_rating">
@@ -52,7 +53,7 @@
                 </div>
                 <div class="d_right">
                     <div class="haicainut">
-                        <a class="d_watchnow" href="linkphimlacaikogi" title="Watch now">
+                        <a class="d_watchnow" href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="Watch now">
                             <i class="fa fa-play mr-2"></i>
                             Watch now
                         </a>
@@ -62,7 +63,7 @@
                             Add to favorite
                         </a>
                     </div>
-                    <h2 class="d_heading-name">Ten Phim HeHe</h2>
+                    <h2 class="d_heading-name">{{ movie.movie_title }}</h2>
                     <div class="d_stats">
                         <button class="button_trailer">
                             <i class="fas fa-video mr-2"></i>
@@ -73,18 +74,14 @@
                         </button>
                         <span>IMDB:10.0</span>
                     </div>
-                    <div class="d_description">Tegan Quin (from Tegan and Sara) has been the victim of identity
-                        theft
-                        and an
-                        ongoing catfishing scam for over 15 years. While investigating, she shares for the first
-                        time,
-                        how she
-                        was ensnared in toxic fan culture that revealed the dark side of fame.</div>
+                    <div class="d_description">
+                        {{ movie.overview }}
+                    </div>
                     <div class="d_elements">
                         <div class="ReGeCa">
                             <div class="row-line">
                                 <span class="d-type"> <strong>Release:</strong> </span>
-                                2024-09-05
+                                {{ movie.release_date }}
                             </div>
                             <div class="row-line">
                                 <span class="d-type"> <strong>Genre:</strong> </span>
@@ -92,14 +89,13 @@
                             </div>
                             <div class="row-line">
                                 <span class="d-type"> <strong>Casts:</strong> </span>
-                                <a href="cast/tegan-quin">Tegan Quin</a>
-                                <a href="cast/sara-quin">Sara Quin</a>
+                                {{ movie.actor_1_name }}    {{ movie.actor_2_name }}    {{ movie.actor_3_name }}
                             </div>
                         </div>
                         <div class="DuCoPr">
                             <div class="row-line">
                                 <span class="d-type"> <strong>Duration:</strong> </span>
-                                100min
+                                {{ movie.runtime}} min
                             </div>
                             <div class="row-line">
                                 <span class="d-type"> <strong>Country:</strong> </span>

@@ -91,6 +91,9 @@ def index():
             return redirect(url_for('index'))
         else:
             flash('Incorrect username or password!', category = 'danger')
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
     return render_template('index.html', registerForm = registerForm, loginForm = loginForm)
 
 @app.route('/logout')
@@ -99,9 +102,21 @@ def logout():
     flash('You have been logged out!', category = 'info')
     return redirect(url_for('index'))
 
+@app.route('/results')
+def results():
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
+    keywords = request.args.get('keywords')
+    list = Movie.query.filter(Movie.movie_title.ilike(f"%{keywords}%")).all()
+    return render_template('results.html', list = list)
+
 #movies
 @app.route('/movies')
 def movies():
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
     noMovies = 48
     page = request.args.get('page', default = 1, type  = int)
     movieQuery = Movie.query.paginate(page = page, per_page = noMovies, error_out = False)
@@ -119,15 +134,26 @@ def movies():
                            end = end,)
 
 #watching
-@app.route('/watching')
-def watching():
-    return render_template('movie-watching.html')
+@app.route('/watching/<string:movie_title>')
+def watching(movie_title):
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
+    movie = Movie.query.filter_by(movie_title = movie_title).first()
+    if not movie:
+        return "Movie not found", 404
+    return render_template('movie-watching.html', movie = movie)
 
 #movie description
-@app.route('/description')
-def description():
-    return render_template('movie-description.html')
-
+@app.route('/description/<string:movie_title>')
+def description(movie_title):
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
+    movie = Movie.query.filter_by(movie_title = movie_title).first()
+    if not movie:
+        return "Movie not found", 404
+    return render_template('movie-description.html', movie = movie)
 
 #Run
 if __name__ == '__main__':

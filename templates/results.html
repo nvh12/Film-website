@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
+<title>Search Results</title>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="grid">
+    <section class="film-area">
+        <div class="film-area__header">
+            <h2 class="film-area__title">Movies</h2>
+            <div class="film-area__tabs"></div>
+        </div>
+        <div class="grid__row">
+            {% for movie in list %}
+            <div class="grid__column-8">
+                <a href="" class="film">
+                    <div class="film__poster">
+                        <div class="film__quality">HD</div>
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
+                        <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="{{ movie.movie_title }}">
+                        <div class="film__play">
+                            <i class="fa fa-play"></i>
+                        </div>
+                        </a>
+                    </div>
+                    <div class="film__details">
+                        <h3 class="film__name">
+                            <a href="#" onclick="window.location.href='{{ url_for('description', movie_title=movie.movie_title) }}'; return false;" class="film__link" title="{{ movie.movie_title }}">
+                                {{ movie.movie_title }}
+                            </a>
+                        </h3>
+                        <div class="film__infor">
+                            <div class="film__infor--container">
+                                <span class="film__infor--year">
+                                    {% if movie.release_date %}
+                                    {{ movie.release_date.strftime('%Y') }}
+                                    {% else %}
+                                    Unknown
+                                    {% endif %}
+                                </span>
+                                <span class="dot"></span>
+                                <span class="film__infor--minute">
+                                    {% if movie.runtime == 0 %}
+                                    Unknown
+                                    {% else %}
+                                    {{ movie.runtime }} min
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <span class="film__infor--type">Movie</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

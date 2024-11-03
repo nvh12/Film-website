@@ -8,13 +8,14 @@
 {% block content %}
 <div class="vd-prebread">
     <li class="vd-prelist">
-        <a href="Home" title="Home">Home /</a>
+        <a href="{{ url_for('index')}}" title="Home">Home /</a>
     </li>
     <li class="vd-prelist">
-        <a href="Movies" title="Movies">Movies /</a>
+        <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
     </li>
+    {% set name = movie.movie_title %}
     <li class="vd-prelist">
-        <a href="MovieName" title="Movie Name">Movie Name</a>
+        <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
     </li>
 </div>
 <div class="videoplay">
