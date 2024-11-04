@@ -22,120 +22,52 @@
     <div class="cover_img"
         style="background-image: url(https://f.woowoowoowoo.net/resize/178x268/4a/e4/4ae472fe454bc93d290f5099568f30af/4ae472fe454bc93d290f5099568f30af.jpg);">
     </div>
-    <div class="container">
+    <div class="container grid">
 
         <div class="kolmj">
             <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" class="d_play">
                 <i class="fa fa-play"></i></a>
         </div>
-
-        <div class="d_detail_page_infor">
-            <div class="d_content">
-                <div class="d_poster">
+        <div class="details__khung"> 
+            <div class="details__left">
+                <div class="details__poster">
+                    <img style="border-radius: 10px;" src="https://f.woowoowoowoo.net/resize/178x268/38/d5/38d557d9a4f2622eb1a7f0f412a65cc5/38d557d9a4f2622eb1a7f0f412a65cc5.jpg" alt="">
+                </div>
+                <div class="details__vote">0.0/0 voted</div>
+                <button class="details__like" onclick="likemovie"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+                <button class="details__dislike " onclick="dislikemovie"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
+            </div>
+            <div class="details__right">
+                <div class="details__watch">
+                    <button class="details__watchnow" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
+                    <button class="details__add"><i class="fa-solid fa-plus" onclick="add_favorite"></i> Add to favorite</button>
+                </div>
+                <h2 class="details__heading-name">{{ movie.movie_title }}</h2>
+                <div class="details__review">
+                    <button style="height: 35px; width: 80px; margin-right: 10px;"><i class="fa-solid fa-video"></i> Trailer</button>
+                    <button style="height: 35px; width: 60px;"><b>CAM</b></button>
                     <div>
-                        <img src="{{ movie.poster_url }}" style="width: 178px; height: 268px;"
-                            title="Film Title">
-                    </div>
-                    <div class="d_rating">
-                        <div class="rating_result">
-                            <span>0.0</span>
-                            / 0 voted
-                        </div>
-                        <button onclick="likemovie" class="d_likebutton">
-                            <i class="fa-solid fa-thumbs-up"></i>
-                            Like
-                        </button>
-                        <button onclick="dislikemovie" class="d_dislikebutton">
-                            <i class="fa-solid fa-thumbs-down"></i>
-                            Dislike
-                        </button>
+                        <h3 style="color: orange; margin-left: 10px; padding: 0;line-height: 35px;">IMDB:10.0</h3>
                     </div>
                 </div>
-                <div class="d_right">
-                    <div class="haicainut">
-                        <a class="d_watchnow" href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="Watch now">
-                            <i class="fa fa-play mr-2"></i>
-                            Watch now
-                        </a>
-
-                        <a class="addtofavorite" onclick="add_favorite">
-                            <i class="fa fa-plus mr-2"></i>
-                            Add to favorite
-                        </a>
+                <div class="details__description">{{ movie.overview }}</div>
+                <div class="details__elements">
+                    <div id="details__element1">
+                            <div><b>Released:</b>{{ movie.release_date }}</div>
+                            <div><b>Genre:</b><a href="genre/documentary">Documentary</a></div>
+                            <div><b>Casts:</b>{{ movie.actor_1_name }}  ,  {{ movie.actor_2_name }}  ,  {{ movie.actor_3_name }}</div>
+                        </ul>
                     </div>
-                    <h2 class="d_heading-name">{{ movie.movie_title }}</h2>
-                    <div class="d_stats">
-                        <button class="button_trailer">
-                            <i class="fas fa-video mr-2"></i>
-                            Trailer
-                        </button>
-                        <button class="button_quality">
-                            <strong>HD</strong>
-                        </button>
-                        <span>IMDB:10.0</span>
-                    </div>
-                    <div class="d_description">
-                        {{ movie.overview }}
-                    </div>
-                    <div class="d_elements">
-                        <div class="ReGeCa">
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Release:</strong> </span>
-                                {{ movie.release_date }}
-                            </div>
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Genre:</strong> </span>
-                                <a href="genre/documentary">Documentary</a>
-                            </div>
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Casts:</strong> </span>
-                                {{ movie.actor_1_name }}    {{ movie.actor_2_name }}    {{ movie.actor_3_name }}
-                            </div>
-                        </div>
-                        <div class="DuCoPr">
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Duration:</strong> </span>
-                                {{ movie.runtime}} min
-                            </div>
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Country:</strong> </span>
-                                <a href="country/US">United States</a>
-                            </div>
-                            <div class="row-line">
-                                <span class="d-type"> <strong>Production:</strong> </span>
-                                <a href="production/story-syndicate"> Story Syndicate</a>
-                                <a href="production/carr-lot-productions"> Carr Lot Productions</a>
-                            </div>
-                        </div>
+                    <div id="details__element2">
+                            <div><b>Duration:</b>{{ movie.runtime}} min</div>
+                            <div><b>Country:</b><a href="country/US">United States</a></div>
+                            <div><b>Production:</b><a href="production/story-syndicate"> Story Syndicate</a>
+                                <a href="production/carr-lot-productions"> Carr Lot Productions</a></div>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-        </div>
-
-    </div>
-</div>
-<div class="footer">
-    <div class="f-container">
-        <div class="f-logo">
-            <img src="https://zoechip.cc/images/group_1/theme_3/logo.png?v=0.1" class="logo">
-            <p>© Zoechip</p>
-        </div>
-        <div class="f-about">
-            <div class="f-text">
-                Zoechip is a Free Movies streaming site with zero ads. We let you watch movies online without having
-                to
-                register or paying, with over 10000 movies and TV-Series. You can also Download full movies from
-                Zoechip
-                and watch it later if you want. </div>
-            <div class="f-menu"> Android App - Terms of service - Contact - Sitemap - FAQ</div>
-        </div>
-        <div class="f-notice">
-            <span class="f-notice-span">Zoechip does not store any files on our server, we only linked to the media
-                which is hosted on 3rd
-                party services.</span>
         </div>
     </div>
-
 </div>
 {% endblock %}
