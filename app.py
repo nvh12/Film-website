@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
 from flask_bcrypt import Bcrypt
@@ -28,8 +29,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique = True, nullable = False)
     email = db.Column(db.String(100), unique = True, nullable = False)
     passwordHash = db.Column(db.String(60), nullable = False)
-    #library = db.relationship('Movie', backref='ownedUser', lazy=True)
-    
+    #library = df.Column(db.String)
+
     @property
     def password(self):
         return self.password
@@ -55,6 +56,10 @@ class Movie(db.Model):
     poster_url = db.Column(db.String, nullable = False)
     overview = db.Column(db.String)
     runtime = db.Column(db.Integer)
+    backdrop_path = db.Column(db.String)
+    origin_country = db.Column(db.String)
+    production = db.Column(db.String)
+
 
 #Forms
 class RegisterForm(FlaskForm):
@@ -69,16 +74,23 @@ class LoginForm(FlaskForm):
     password = PasswordField(label='Password: ', validators=[Length(min=8), DataRequired()])
     submit = SubmitField(label='Log in')
 
-#Routes
-#home
-@app.route('/', methods = ['POST', 'GET'])
-def index():
+
+#A few functions
+def login_register():
     registerForm = RegisterForm()
     if registerForm.validate_on_submit():
         newUser = User(username = registerForm.username.data, email = registerForm.email.data, password = registerForm.password1.data)
-        db.session.add(newUser)
-        db.session.commit()
-        return redirect(url_for('index'))
+        try:
+            db.session.add(newUser)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()  
+            if User.query.filter_by(email=registerForm.email.data).first():
+                flash('This email is already used!', category='danger')
+            elif User.query.filter_by(username=registerForm.username.data).first():
+                flash('This username is already taken!', category='danger')
+            else:
+                flash('An unexpected error occurred. Please try again later.', category='danger')
     if registerForm.errors != {}:
         for err_msg in registerForm.errors.values():
             flash(f'Error: {err_msg}', category='danger')
@@ -87,10 +99,17 @@ def index():
         attemptedUser = User.query.filter_by(username = loginForm.username.data).first()
         if attemptedUser and attemptedUser.checkPassword(attemptedPassword = loginForm.password.data):
             login_user(attemptedUser)
-            flash('You are logged in as {attemptedUser.username}!', category = 'success')
-            return redirect(url_for('index'))
+            flash(f'You are logged in as {attemptedUser.username}!', category = 'success')
         else:
             flash('Incorrect username or password!', category = 'danger')
+    return loginForm, registerForm
+
+
+#Routes
+#home
+@app.route('/', methods = ['POST', 'GET'])
+def index(): 
+    loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
@@ -102,18 +121,20 @@ def logout():
     flash('You have been logged out!', category = 'info')
     return redirect(url_for('index'))
 
-@app.route('/results')
+@app.route('/results', methods = ['POST', 'GET'])
 def results():
+    loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
     keywords = request.args.get('keywords')
     list = Movie.query.filter(Movie.movie_title.ilike(f"%{keywords}%")).all()
-    return render_template('results.html', list = list)
+    return render_template('results.html', list = list, registerForm = registerForm, loginForm = loginForm)
 
 #movies
-@app.route('/movies')
+@app.route('/movies', methods = ['POST', 'GET'])
 def movies():
+    loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
@@ -131,29 +152,32 @@ def movies():
                            prevPage = movieQuery.prev_num,
                            noPages = movieQuery.pages,
                            start = start,
-                           end = end,)
+                           end = end,
+                           registerForm = registerForm, loginForm = loginForm)
 
 #watching
-@app.route('/watching/<string:movie_title>')
+@app.route('/watching/<string:movie_title>', methods = ['POST', 'GET'])
 def watching(movie_title):
+    loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
     movie = Movie.query.filter_by(movie_title = movie_title).first()
     if not movie:
         return "Movie not found", 404
-    return render_template('movie-watching.html', movie = movie)
+    return render_template('movie-watching.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
 
 #movie description
-@app.route('/description/<string:movie_title>')
+@app.route('/description/<string:movie_title>', methods = ['POST', 'GET'])
 def description(movie_title):
+    loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
     movie = Movie.query.filter_by(movie_title = movie_title).first()
     if not movie:
         return "Movie not found", 404
-    return render_template('movie-description.html', movie = movie)
+    return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
 
 #Run
 if __name__ == '__main__':

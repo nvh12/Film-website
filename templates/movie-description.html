@@ -31,7 +31,7 @@
         <div class="details__khung"> 
             <div class="details__left">
                 <div class="details__poster">
-                    <img style="border-radius: 10px;" src="https://f.woowoowoowoo.net/resize/178x268/38/d5/38d557d9a4f2622eb1a7f0f412a65cc5/38d557d9a4f2622eb1a7f0f412a65cc5.jpg" alt="">
+                    <img style="border-radius: 10px; width: 178px; height: 268px;" src="{{ movie.poster_url }}" alt="">
                 </div>
                 <div class="details__vote">0.0/0 voted</div>
                 <button class="details__like" onclick="likemovie"><i class="fa-solid fa-thumbs-up"></i> Like</button>
@@ -45,24 +45,19 @@
                 <h2 class="details__heading-name">{{ movie.movie_title }}</h2>
                 <div class="details__review">
                     <button style="height: 35px; width: 80px; margin-right: 10px;"><i class="fa-solid fa-video"></i> Trailer</button>
-                    <button style="height: 35px; width: 60px;"><b>CAM</b></button>
-                    <div>
-                        <h3 style="color: orange; margin-left: 10px; padding: 0;line-height: 35px;">IMDB:10.0</h3>
-                    </div>
                 </div>
                 <div class="details__description">{{ movie.overview }}</div>
                 <div class="details__elements">
                     <div id="details__element1">
-                            <div><b>Released:</b>{{ movie.release_date }}</div>
-                            <div><b>Genre:</b><a href="genre/documentary">Documentary</a></div>
-                            <div><b>Casts:</b>{{ movie.actor_1_name }}  ,  {{ movie.actor_2_name }}  ,  {{ movie.actor_3_name }}</div>
+                            <div><b>Released:</b> {{ movie.release_date }}</div>
+                            <div><b>Genre:</b> <a href="genre/documentary">{{ movie.genres }}</a></div>
+                            <div><b>Casts:</b> {{ movie.actor_1_name }}  ,  {{ movie.actor_2_name }}  ,  {{ movie.actor_3_name }}</div>
                         </ul>
                     </div>
                     <div id="details__element2">
-                            <div><b>Duration:</b>{{ movie.runtime}} min</div>
-                            <div><b>Country:</b><a href="country/US">United States</a></div>
-                            <div><b>Production:</b><a href="production/story-syndicate"> Story Syndicate</a>
-                                <a href="production/carr-lot-productions"> Carr Lot Productions</a></div>
+                            <div><b>Duration:</b> {{ movie.runtime}} min</div>
+                            <div><b>Country:</b><a href="country/US"> {{ movie.origin_country }}</a></div>
+                            <div><b>Production:</b><a href="production/story-syndicate"> {{ movie.production }}</a>
                         </ul>
                     </div>
                 </div>

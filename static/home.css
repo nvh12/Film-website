@@ -198,6 +198,24 @@
 
 /* CSS for Content  */
 
+/* for the flash messages */
+@keyframes fadeout {
+  0% {
+    opacity: 1; 
+  }
+  80% {
+    opacity: 0; 
+  }
+  100% {
+    opacity: 0; 
+    display: none; 
+  }
+}
+
+.alert {
+  animation: fadeout 5s forwards; 
+}
+
 .content {
   background-color: #fafafa;
 }
