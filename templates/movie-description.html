@@ -20,7 +20,7 @@
         </li>
     </div>
     <div class="cover_img"
-        style="background-image: url(https://f.woowoowoowoo.net/resize/178x268/4a/e4/4ae472fe454bc93d290f5099568f30af/4ae472fe454bc93d290f5099568f30af.jpg);">
+        style="background-image: url('{{ movie.backdrop_path }}');">
     </div>
     <div class="container grid">
 
@@ -56,8 +56,8 @@
                     </div>
                     <div id="details__element2">
                             <div><b>Duration:</b> {{ movie.runtime}} min</div>
-                            <div><b>Country:</b><a href="country/US"> {{ movie.origin_country }}</a></div>
-                            <div><b>Production:</b><a href="production/story-syndicate"> {{ movie.production }}</a>
+                            <div><b>Country:</b> {{ movie.origin_country }}</div>
+                            <div><b>Production:</b> {{ movie.production }}
                         </ul>
                     </div>
                 </div>
