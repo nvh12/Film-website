@@ -39,6 +39,11 @@ html {
   width: 12.5%;
 }
 
+/* CSS for header */
+.header__menu--link:hover {
+  color: var(--button-color-hover);
+}
+
 /* CSS for login, logout, register */
 .navbar__login-container {
   display: flex;
@@ -64,6 +69,7 @@ html {
 
 .navbar__login--link:hover {
   background-color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
 }
 
 .navbar__login--icon {
@@ -74,19 +80,19 @@ html {
 /* for the flash messages */
 @keyframes fadeout {
   0% {
-    opacity: 1; 
+    opacity: 1;
   }
   80% {
-    opacity: 0; 
+    opacity: 0;
   }
   100% {
-    opacity: 0; 
-    display: none; 
+    opacity: 0;
+    display: none;
   }
 }
 
 .alert {
-  animation: fadeout 5s forwards; 
+  animation: fadeout 5s forwards;
 }
 
 /* CSS for film-area */

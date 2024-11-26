@@ -1,0 +1,11 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 30px 0;
+}
+
+.pagination_btn {
+  text-decoration: none;
+  color: black;
+}

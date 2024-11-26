@@ -1,51 +1,33 @@
-{% extends 'base.html' %}
-
-{% block head %}
+{% extends 'base.html' %} {% block head %}
 <title>Watching</title>
-<link rel="stylesheet" href="{{ url_for('static', filename = 'movie-watching.css')}}" />
-{% endblock %}
-
-{% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename = 'movie-watching.css')}}"
+/>
+{% endblock %} {% block content %}
 <div class="vd-prebread">
-    <li class="vd-prelist">
-        <a href="{{ url_for('index')}}" title="Home">Home /</a>
-    </li>
-    <li class="vd-prelist">
-        <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
-    </li>
-    {% set name = movie.movie_title %}
-    <li class="vd-prelist">
-        <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
-    </li>
+  <li class="vd-prelist">
+    <a href="{{ url_for('index')}}" title="Home">Home /</a>
+  </li>
+  <li class="vd-prelist">
+    <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
+  </li>
+  {% set name = movie.movie_title %}
+  <li class="vd-prelist">
+    <a
+      href="#"
+      onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;"
+      title="{{ movie.movie_title }}"
+      >{{ movie.movie_title }}</a
+    >
+  </li>
 </div>
 <div class="videoplay">
-    <video width="1200px" height="600px" controls>
-        <source src="path/to/video.mp4" type="video/mp4">
-        <source src="path/to/video.webm" type="video/webm">
-        Trình duyệt của bạn không hỗ trợ thẻ video.
-    </video>
-</div>
-<div class="footer">
-    <div class="f-container">
-        <div class="f-logo">
-            <img src="https://zoechip.cc/images/group_1/theme_3/logo.png?v=0.1" class="logo">
-            <p>© Zoechip</p>
-        </div>
-        <div class="f-about">
-            <div class="f-text">
-                Zoechip is a Free Movies streaming site with zero ads. We let you watch movies online without having
-                to
-                register or paying, with over 10000 movies and TV-Series. You can also Download full movies from
-                Zoechip
-                and watch it later if you want. </div>
-            <div class="f-menu"> Android App - Terms of service - Contact - Sitemap - FAQ</div>
-        </div>
-        <div class="f-notice">
-            <span class="f-notice-span">Zoechip does not store any files on our server, we only linked to the media
-                which is hosted on 3rd
-                party services.</span>
-        </div>
-    </div>
+  <video width="1200px" height="600px" controls>
+    <source src="path/to/video.mp4" type="video/mp4" />
+    <source src="path/to/video.webm" type="video/webm" />
+    Trình duyệt của bạn không hỗ trợ thẻ video.
+  </video>
 </div>
 
 {% endblock %}

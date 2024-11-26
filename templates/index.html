@@ -1,427 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web movie theater</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'base.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'home.css')}}"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web movie theater</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
-  <link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
-</head>
-
-<body>
-  <div class="app">
-    <div class="header">
-      <div class="grid">
-        <div class="navbar">
-          <div class="navbar__logo">
-            <img src="static/images/logo.png" alt="Logo film" class="navbar__logo--img" />
-          </div>
-          <ul class="navbar__menu-list">
-            <li class="navbar__item">
-              <a class="navbar__item-link" href="javascript:void(0)" onclick="location.reload()">Home</a>
-            </li>
-            <li class="navbar__item navbar__genre">
-              <a class="navbar__item-link" href="">Genre</a>
-              <ul class="navbar__typelist">
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-                <li class="navbar__typelist--item">
-                  <a href="" class="navbar__typelist--link">Action</a>
-                </li>
-              </ul>
-            </li>
-            <li class="navbar__item">
-              <a class="navbar__item-link" href="{{ url_for('movies')}}">Movies</a>
-            </li>
-            <li class="navbar__item">
-              <a class="navbar__item-link" href="https://www.imdb.com/chart/top/">Top IMDB</a>
-            </li>
-          </ul>
-          {% if current_user.is_authenticated %}
-          <div class="navbar__login-container">
-            <div class="navbar__login">
-              <a class="navbar__login--link">
-                <i class="fa-regular fa-user navbar__login--icon"></i>
-                {{ current_user.username }}
-              </a>
+  <body>
+    <div class="app">
+      <div class="header">
+        <div class="grid">
+          <div class="navbar">
+            <div class="navbar__logo">
+              <img
+                src="static/images/logo.png"
+                alt="Logo film"
+                class="navbar__logo--img"
+              />
             </div>
-            <div class="navbar__login">
-              <a class="navbar__login--link" href="{{ url_for('logout')}}">
-                Logout
-              </a>
-            </div>
-          </div>
-          {% else %}
-          <div class="navbar__login-container">
-            <div class="navbar__login">
-              <button class="navbar__login--link" id="loginBtn">
-                <i class="fa-regular fa-user navbar__login--icon"></i>
-                Login
-              </button>
-            </div>
-            <div class="navbar__login">
-              <button class="navbar__login--link" id="registerBtn">
-                <i class="fa-regular fa-user navbar__login--icon"></i>
-                Register
-              </button>
-            </div>
-          </div>
-          {% endif %}
-        </div>
-        <div class="search">
-          <h1 class="search__title">Find Movies, TV shows and more</h1>
-          <div class="search__home">
-            <form class="search__home--content" method="get">
-              <div class="search__home_group">
-                <div class="search__icon">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
-                <input type="text" class="search__input" name="search" placeholder="Enter keywords..." />
+            <ul class="navbar__menu-list">
+              <li class="navbar__item">
+                <a
+                  class="navbar__item-link"
+                  href="javascript:void(0)"
+                  onclick="location.reload()"
+                  >Home</a
+                >
+              </li>
+              <li class="navbar__item navbar__genre">
+                <a class="navbar__item-link" href="">Genre</a>
+                <ul class="navbar__typelist">
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Action</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Adventure</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Comedy</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Drama</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Horror</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Kids</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">War</a>
+                  </li>
+                  <li class="navbar__typelist--item">
+                    <a href="" class="navbar__typelist--link">Romance</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="navbar__item">
+                <a class="navbar__item-link" href="{{ url_for('movies')}}"
+                  >Movies</a
+                >
+              </li>
+              <li class="navbar__item">
+                <a
+                  class="navbar__item-link"
+                  href="https://www.imdb.com/chart/top/"
+                  >Top IMDB</a
+                >
+              </li>
+            </ul>
+            {% if current_user.is_authenticated %}
+            <div class="navbar__login-container">
+              <div class="navbar__login">
+                <a class="navbar__login--link">
+                  <i class="fa-regular fa-user navbar__login--icon"></i>
+                  {{ current_user.username }}
+                </a>
               </div>
-              <button type="button" class="search__btn">
-                <i class="fa-solid fa-arrow-right"></i>
-              </button>
-            </form>
+              <div class="navbar__login">
+                <a class="navbar__login--link" href="{{ url_for('logout')}}">
+                  Logout
+                </a>
+              </div>
+            </div>
+            {% else %}
+            <div class="navbar__login-container">
+              <div class="navbar__login">
+                <button class="navbar__login--link" id="loginBtn">
+                  <i class="fa-regular fa-user navbar__login--icon"></i>
+                  Login
+                </button>
+              </div>
+              <div class="navbar__login">
+                <button class="navbar__login--link" id="registerBtn">
+                  <i class="fa-regular fa-user navbar__login--icon"></i>
+                  Register
+                </button>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          <div class="search">
+            <h1 class="search__title">Find Movies, TV shows and more</h1>
+            <div class="search__home">
+              <form class="search__home--content" method="get">
+                <div class="search__home_group">
+                  <div class="search__icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="search__input"
+                    name="search"
+                    placeholder="Enter keywords..."
+                  />
+                </div>
+                <button type="button" class="search__btn">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="content">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %} {% for category, message in messages %}
-      <div class="alert alert-{{ category }}" style="
-                position: fixed;
-                top: 0;
-                z-index: 9999;
-                background-color: darkcyan;
-                color: white;
-                padding: 15px;
-                margin-bottom: 10px;
-                border-radius: 10px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                animation: fadeout 5s forwards;
-                max-width: 100%;
-              ">
-        <button type="button" class="close-btn" aria-label="Close" onclick="this.parentElement.style.display='none';"
+      <div class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div
+          class="alert alert-{{ category }}"
           style="
-                  background: none;
-                  border: none;
-                  color: white;
-                  cursor: pointer;
-                  margin-left: 0px;
-                ">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        {{ message }}
-      </div>
-      {% endfor %} {% endif %} {% endwith %}
-      <div class="grid">
-        <h3 class="text-discription">
-          <p>
-            Stream tv series online free - Watch full movies and series online
-            for free. Watch movies without registering to the site or any kind
-            of sign up. Stream unlimited for free. Best place to watch tv
-            series online in HD with English and Spanish subtitle.
-          </p>
-        </h3>
-        <div class="social">
-          <div class="social__label">
-            <span class="social__label--number">7.3k</span>
-            <span class="social__label--share">Shares</span>
-          </div>
-          <div class="social__item facebook">
-            <i class="fa-brands fa-facebook"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
-          <div class="social__item X-twitter">
-            <i class="fa-brands fa-x-twitter"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
-          <div class="social__item whatsapp">
-            <i class="fa-brands fa-whatsapp"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
-          <div class="social__item messenger">
-            <i class="fa-brands fa-facebook-messenger"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
-          <div class="social__item reddit">
-            <i class="fa-brands fa-reddit-alien"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
-          <div class="social__item telegram">
-            <i class="fa-brands fa-telegram"></i>
-            <span class="social__label--number">7.3k</span>
-          </div>
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            background-color: darkcyan;
+            color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeout 5s forwards;
+            max-width: 100%;
+          "
+        >
+          <button
+            type="button"
+            class="close-btn"
+            aria-label="Close"
+            onclick="this.parentElement.style.display='none';"
+            style="
+              background: none;
+              border: none;
+              color: white;
+              cursor: pointer;
+              margin-left: 0px;
+            "
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
         </div>
-        <section class="film-area">
-          <div class="film-area__header">
-            <h2 class="film-area__title">Trending</h2>
-            <div class="film-area__tabs"></div>
-          </div>
-          <div class="grid__row">
-            {% for i in range(16) %}
-            <div class="grid__column-8">
-              <a href="" class="film">
-                <div class="film__poster">
-                  <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
-                </div>
-                <div class="film__details">
-                  <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
-                    </a>
-                  </h3>
-                  <div class="film__infor">
-                    <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
-                      <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
-                    </div>
-                    <span class="film__infor--type">Movie</span>
-                  </div>
-                </div>
-              </a>
+        {% endfor %} {% endif %} {% endwith %}
+        <div class="grid">
+          <h3 class="text-discription">
+            <p>
+              Stream tv series online free - Watch full movies and series online
+              for free. Watch movies without registering to the site or any kind
+              of sign up. Stream unlimited for free. Best place to watch tv
+              series online in HD with English and Spanish subtitle.
+            </p>
+          </h3>
+          <div class="social">
+            <div class="social__label">
+              <span class="social__label--number">7.3k</span>
+              <span class="social__label--share">Shares</span>
             </div>
-            {% endfor %}
-          </div>
-        </section>
-        <section class="film-area">
-          <div class="film-area__header">
-            <h2 class="film-area__title">Lastest Movie</h2>
-            <div class="film-area__tabs"></div>
-          </div>
-          <div class="grid__row">
-            {% for i in range(16) %}
-            <div class="grid__column-8">
-              <a href="" class="film">
-                <div class="film__poster">
-                  <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
-                </div>
-                <div class="film__details">
-                  <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
-                    </a>
-                  </h3>
-                  <div class="film__infor">
-                    <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
-                      <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
-                    </div>
-                    <span class="film__infor--type">Movie</span>
-                  </div>
-                </div>
-              </a>
+            <div class="social__item facebook">
+              <i class="fa-brands fa-facebook"></i>
+              <span class="social__label--number">7.3k</span>
             </div>
-            {% endfor %}
-          </div>
-        </section>
-        <section class="film-area">
-          <div class="film-area__header">
-            <h2 class="film-area__title">Coming Soon</h2>
-            <div class="film-area__tabs"></div>
-          </div>
-          <div class="grid__row">
-            {% for i in range(16) %}
-            <div class="grid__column-8">
-              <a href="" class="film">
-                <div class="film__poster">
-                  <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
-                </div>
-                <div class="film__details">
-                  <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
-                    </a>
-                  </h3>
-                  <div class="film__infor">
-                    <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
-                      <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
-                    </div>
-                    <span class="film__infor--type">Movie</span>
-                  </div>
-                </div>
-              </a>
+            <div class="social__item X-twitter">
+              <i class="fa-brands fa-x-twitter"></i>
+              <span class="social__label--number">7.3k</span>
             </div>
-            {% endfor %}
+            <div class="social__item whatsapp">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span class="social__label--number">7.3k</span>
+            </div>
+            <div class="social__item messenger">
+              <i class="fa-brands fa-facebook-messenger"></i>
+              <span class="social__label--number">7.3k</span>
+            </div>
+            <div class="social__item reddit">
+              <i class="fa-brands fa-reddit-alien"></i>
+              <span class="social__label--number">7.3k</span>
+            </div>
+            <div class="social__item telegram">
+              <i class="fa-brands fa-telegram"></i>
+              <span class="social__label--number">7.3k</span>
+            </div>
           </div>
-        </section>
+          <section class="film-area">
+            <div class="film-area__header">
+              <h2 class="film-area__title">Trending</h2>
+              <div class="film-area__tabs"></div>
+            </div>
+            <div class="grid__row">
+              {% for i in range(16) %}
+              <div class="grid__column-8">
+                <a href="" class="film">
+                  <div class="film__poster">
+                    <div class="film__quality">HD</div>
+                    <img
+                      src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
+                      alt=""
+                      class="film__img"
+                    />
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </div>
+                  <div class="film__details">
+                    <h3 class="film__name">
+                      <a href="" class="film__link" title="hehe">
+                        Venom:Till dead to they part
+                      </a>
+                    </h3>
+                    <div class="film__infor">
+                      <div class="film__infor--container">
+                        <span class="film__infor--year">2024</span>
+                        <span class="dot"></span>
+                        <span class="film__infor--minute">120m</span>
+                      </div>
+                      <span class="film__infor--type">Movie</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+          <section class="film-area">
+            <div class="film-area__header">
+              <h2 class="film-area__title">Lastest Movie</h2>
+              <div class="film-area__tabs"></div>
+            </div>
+            <div class="grid__row">
+              {% for i in range(16) %}
+              <div class="grid__column-8">
+                <a href="" class="film">
+                  <div class="film__poster">
+                    <div class="film__quality">HD</div>
+                    <img
+                      src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
+                      alt=""
+                      class="film__img"
+                    />
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </div>
+                  <div class="film__details">
+                    <h3 class="film__name">
+                      <a href="" class="film__link" title="hehe">
+                        Venom:Till dead to they part
+                      </a>
+                    </h3>
+                    <div class="film__infor">
+                      <div class="film__infor--container">
+                        <span class="film__infor--year">2024</span>
+                        <span class="dot"></span>
+                        <span class="film__infor--minute">120m</span>
+                      </div>
+                      <span class="film__infor--type">Movie</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+          <section class="film-area">
+            <div class="film-area__header">
+              <h2 class="film-area__title">Coming Soon</h2>
+              <div class="film-area__tabs"></div>
+            </div>
+            <div class="grid__row">
+              {% for i in range(16) %}
+              <div class="grid__column-8">
+                <a href="" class="film">
+                  <div class="film__poster">
+                    <div class="film__quality">HD</div>
+                    <img
+                      src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
+                      alt=""
+                      class="film__img"
+                    />
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </div>
+                  <div class="film__details">
+                    <h3 class="film__name">
+                      <a href="" class="film__link" title="hehe">
+                        Venom:Till dead to they part
+                      </a>
+                    </h3>
+                    <div class="film__infor">
+                      <div class="film__infor--container">
+                        <span class="film__infor--year">2024</span>
+                        <span class="dot"></span>
+                        <span class="film__infor--minute">120m</span>
+                      </div>
+                      <span class="film__infor--type">Movie</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="grid"></div>
       </div>
     </div>
-    <div class="footer">
-      <div class="grid"></div>
-    </div>
-  </div>
-  <div class="modal hidden" id="loginForm">
-    <div class="modal__form">
-      <button type="button" class="closeButton" id="closeLoginForm">
-        <i class="fa-solid fa-x"></i>
-      </button>
-      <div class="container" style="
+    <div class="modal hidden" id="loginForm">
+      <div class="modal__form">
+        <button type="button" class="closeButton" id="closeLoginForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <div
+          class="container"
+          style="
             max-width: 400px;
             margin: auto;
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-          ">
-        <h2 style="text-align: center; color: #333">Login</h2>
-        <form method="POST" class="form-signin" style="display: flex; flex-direction: column; gap: 20px">
-          {{ loginForm.hidden_tag() }}
-          <div style="display: flex; flex-direction: column">
-            {{ loginForm.username.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            loginForm.username(class="form-control", placeholder="Enter
-            Username", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+          "
+        >
+          <h2 style="text-align: center; color: #333">Login</h2>
+          <form
+            method="POST"
+            class="form-signin"
+            style="display: flex; flex-direction: column; gap: 20px"
+          >
+            {{ loginForm.hidden_tag() }}
+            <div style="display: flex; flex-direction: column">
+              {{ loginForm.username.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              loginForm.username(class="form-control", placeholder="Enter
+              Username", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ loginForm.password.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            loginForm.password(class="form-control", placeholder="Enter
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ loginForm.password.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              loginForm.password(class="form-control", placeholder="Enter
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <button type="button" id="changeToRegisterButton" style="
+            <button
+              type="button"
+              id="changeToRegisterButton"
+              style="
                 display: flex;
                 flex-direction: column;
                 border: none;
                 background-color: white;
                 cursor: pointer;
-              " class>
-            Don't have an account? Register
-          </button>
+              "
+              class
+            >
+              Don't have an account? Register
+            </button>
 
-          {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
-          background-color: #007bff; border: none; border-radius: 5px; color:
-          white; cursor: pointer; font-size: 16px")}}
-        </form>
+            {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
+            background-color: #007bff; border: none; border-radius: 5px; color:
+            white; cursor: pointer; font-size: 16px")}}
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="modal hidden" id="registerForm">
-    <div class="modal__form">
-      <button type="button" class="closeButton" id="closeRegisterForm">
-        <i class="fa-solid fa-x"></i>
-      </button>
-      <div class="container" style="
+    <div class="modal hidden" id="registerForm">
+      <div class="modal__form">
+        <button type="button" class="closeButton" id="closeRegisterForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <div
+          class="container"
+          style="
             max-width: 400px;
             margin: auto;
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-          ">
-        <h2 style="text-align: center; color: #333">Create Account</h2>
-        <form method="POST" class="form-register" style="display: flex; flex-direction: column; gap: 20px">
-          {{ registerForm.hidden_tag() }}
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.username.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.username(class="form-control", placeholder="Enter
-            Username", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+          "
+        >
+          <h2 style="text-align: center; color: #333">Create Account</h2>
+          <form
+            method="POST"
+            class="form-register"
+            style="display: flex; flex-direction: column; gap: 20px"
+          >
+            {{ registerForm.hidden_tag() }}
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.username.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.username(class="form-control", placeholder="Enter
+              Username", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.email.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            registerForm.email(class="form-control", placeholder="Enter
-            Email", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.email.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              registerForm.email(class="form-control", placeholder="Enter
+              Email", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.password1.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.password1(class="form-control", placeholder="Enter
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.password1.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.password1(class="form-control", placeholder="Enter
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.password2.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.password2(class="form-control", placeholder="Confirm
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.password2.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.password2(class="form-control", placeholder="Confirm
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <button type="button" id="changeToLoginButton" style="
+            <button
+              type="button"
+              id="changeToLoginButton"
+              style="
                 display: flex;
                 flex-direction: column;
                 border: none;
                 background-color: white;
                 cursor: pointer;
-              ">
-            Already have an account? Login
-          </button>
+              "
+            >
+              Already have an account? Login
+            </button>
 
-          {{ registerForm.submit(class="btn btn-primary", style="padding:
-          10px; background-color: #007bff; border: none; border-radius: 5px;
-          color: white; cursor: pointer; font-size: 16px")}}
-        </form>
+            {{ registerForm.submit(class="btn btn-primary", style="padding:
+            10px; background-color: #007bff; border: none; border-radius: 5px;
+            color: white; cursor: pointer; font-size: 16px")}}
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <script src="/static/sciprt.js"></script>
-</body>
-
+    <script src="/static/sciprt.js"></script>
+  </body>
 </html>
