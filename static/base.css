@@ -82,9 +82,11 @@ html {
   0% {
     opacity: 1;
   }
+
   80% {
     opacity: 0;
   }
+
   100% {
     opacity: 0;
     display: none;
@@ -285,7 +287,9 @@ html {
   background: #000;
   padding: 40px 0;
   color: #b9b9b9;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  padding: 1rem;
 }
 
 .f-container {
