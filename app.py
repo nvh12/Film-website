@@ -5,14 +5,11 @@ from sqlalchemy.exc import IntegrityError
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_user, logout_user, UserMixin
+from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
 from urllib.parse import unquote
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Users.db'
-app.config['SQLALCHEMY_BINDS'] = {
-    'movies' : 'sqlite:///Movies.db'
-}
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '2a0f76e24979a57e'
 db = SQLAlchemy(app)
@@ -26,11 +23,13 @@ def load_user(userId):
 
 #Databases
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key = True)
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key = True, unique = True, nullable = False)
     username = db.Column(db.String(50), unique = True, nullable = False)
     email = db.Column(db.String(100), unique = True, nullable = False)
     passwordHash = db.Column(db.String(60), nullable = False)
-    #library = df.Column(db.String)
+    
+    movies = db.relationship('Movie', secondary = 'user_movie', back_populates = 'users')
 
     @property
     def password(self):
@@ -44,7 +43,6 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.passwordHash, attemptedPassword)
 
 class Movie(db.Model):
-    __bind_key__ = 'movies'
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key = True)
     movie_title = db.Column(db.String, nullable = False)
@@ -60,6 +58,13 @@ class Movie(db.Model):
     backdrop_path = db.Column(db.String)
     origin_country = db.Column(db.String)
     production = db.Column(db.String)
+
+    users = db.relationship('User', secondary = 'user_movie', back_populates = 'movies')
+
+class UserMovie(db.Model):
+    __tablename__ = 'user_movie'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True, nullable = False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), primary_key = True, nullable = False)
 
 
 #Forms
@@ -79,6 +84,7 @@ class LoginForm(FlaskForm):
 #A few functions
 def login_register():
     registerForm = RegisterForm()
+    loginForm = LoginForm()
     if registerForm.validate_on_submit():
         newUser = User(username = registerForm.username.data, email = registerForm.email.data, password = registerForm.password1.data)
         try:
@@ -91,11 +97,7 @@ def login_register():
             elif User.query.filter_by(username=registerForm.username.data).first():
                 flash('This username is already taken!', category='danger')
             else:
-                flash('An unexpected error occurred. Please try again later.', category='danger')
-    if registerForm.errors != {}:
-        for err_msg in registerForm.errors.values():
-            flash(f'Error: {err_msg}', category='danger')
-    loginForm = LoginForm()
+                flash('Some fields are missing or there was an error with your submission. Please check and try again.', category='danger')
     if loginForm.validate_on_submit():
         attemptedUser = User.query.filter_by(username = loginForm.username.data).first()
         if attemptedUser and attemptedUser.checkPassword(attemptedPassword = loginForm.password.data):
@@ -180,6 +182,16 @@ def description(movie_title):
     if not movie:
         return "Movie not found", 404
     return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
+
+#user library
+@app.route('/user/library', methods = ['POST', 'GET'])
+def library():
+    library = current_user.movies
+    loginForm, registerForm = login_register()
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
+    return render_template('user.html', registerForm = registerForm, loginForm = loginForm, library = library)
 
 #Run
 if __name__ == '__main__':
