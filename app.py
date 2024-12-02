@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
@@ -58,6 +58,8 @@ class Movie(db.Model):
     backdrop_path = db.Column(db.String)
     origin_country = db.Column(db.String)
     production = db.Column(db.String)
+    likes = db.Column(db.Integer, nullable = False)
+    dislikes = db.Column(db.Integer, nullable = False)
 
     users = db.relationship('User', secondary = 'user_movie', back_populates = 'movies')
 
@@ -173,7 +175,6 @@ def watching(movie_title):
 #movie description
 @app.route('/description/<movie_title>', methods = ['POST', 'GET'])
 def description(movie_title):
-    print(movie_title)
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
@@ -181,17 +182,40 @@ def description(movie_title):
     movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
     if not movie:
         return "Movie not found", 404
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if request.is_json:
+                data = request.get_json()
+                action = data.get('action')
+                id = data.get('id')
+                if action == 'like':
+                    movie.likes += 1
+                    db.session.commit()
+                    flash(f'Liked!', 'success')
+                elif action == 'dislike':
+                    movie.dislikes += 1
+                    db.session.commit()
+                    flash(f'Disliked!', 'success')
+                elif action == 'add':
+                    if movie not in current_user.movies:
+                        current_user.movies.append(movie)
+                        db.session.commit()
+                    flash(f'Added to library', 'success')
+                return {'message': f'{action.capitalize()} updated!', 'likes': movie.likes, 'dislikes': movie.dislikes}
+        else:
+            flash(f'Log in to use the features', 'info')
+            return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
     return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
 
 #user library
-@app.route('/user/library', methods = ['POST', 'GET'])
+@app.route('/library', methods = ['POST', 'GET'])
 def library():
     library = current_user.movies
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    return render_template('user.html', registerForm = registerForm, loginForm = loginForm, library = library)
+    return render_template('library.html', registerForm = registerForm, loginForm = loginForm, library = library)
 
 #Run
 if __name__ == '__main__':

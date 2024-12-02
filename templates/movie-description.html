@@ -25,7 +25,7 @@
     <div class="container grid">
 
         <div class="kolmj">
-            <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" class="d_play">
+            <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}'; return false;" class="d_play">
                 <i class="fa fa-play"></i></a>
         </div>
         <div class="details__khung"> 
@@ -33,14 +33,14 @@
                 <div class="details__poster">
                     <img style="border-radius: 10px; width: 178px; height: 268px;" src="{{ movie.poster_url }}" alt="">
                 </div>
-                <div class="details__vote">0.0/0 voted</div>
-                <button class="details__like" onclick="likemovie"><i class="fa-solid fa-thumbs-up"></i> Like</button>
-                <button class="details__dislike " onclick="dislikemovie"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
+                <div class="details__vote" id="movie-{{ movie.id }}-reactions">Likes: {{ movie.likes }} | Dislikes {{ movie.dislikes }}</div>
+                <button class="details__like" id="like" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+                <button class="details__dislike" id="dislike" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
             </div>
             <div class="details__right">
                 <div class="details__watch">
-                    <button class="details__watchnow" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
-                    <button class="details__add"><i class="fa-solid fa-plus" onclick="add_favorite"></i> Add to favorite</button>
+                    <button class="details__watchnow" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
+                    <button class="details__add" id="add" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-plus"></i> Add to library</button>
                 </div>
                 <h2 class="details__heading-name">{{ movie.movie_title }}</h2>
                 <div class="details__review">
@@ -65,4 +65,5 @@
         </div>
     </div>
 </div>
+<script src="{{ url_for('static', filename = 'DescriptionButtons.js')}}"></script>
 {% endblock %}

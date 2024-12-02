@@ -71,7 +71,7 @@
           {% if current_user.is_authenticated %}
           <div class="navbar__login-container">
             <div class="navbar__login">
-              <a class="navbar__login--link">
+              <a class="navbar__login--link" href="{{ url_for('library') }}">
                 <i class="fa-regular fa-user navbar__login--icon"></i>
                 {{ current_user.username }}
               </a>
@@ -421,7 +421,7 @@
       </div>
     </div>
   </div>
-  <script src="/static/sciprt.js"></script>
+  <script src="{{ url_for('static', filename = 'LoginRegisterPopUp.js')}}"></script>
 </body>
 
 </html>
