@@ -191,20 +191,23 @@ def description(movie_title):
                 if action == 'like':
                     movie.likes += 1
                     db.session.commit()
-                    flash(f'Liked!', 'success')
+                    return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
                 elif action == 'dislike':
                     movie.dislikes += 1
                     db.session.commit()
-                    flash(f'Disliked!', 'success')
+                    return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
                 elif action == 'add':
                     if movie not in current_user.movies:
                         current_user.movies.append(movie)
                         db.session.commit()
-                    flash(f'Added to library', 'success')
-                return {'message': f'{action.capitalize()} updated!', 'likes': movie.likes, 'dislikes': movie.dislikes}
+                        return {'message': f'Movie added to library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                elif action == 'remove':
+                    if movie in current_user.movies:
+                        current_user.movies.remove(movie)
+                        db.session.commit()
+                        return {'message': f'Movie removed from library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
         else:
-            flash(f'Log in to use the features', 'info')
-            return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
+            return {'message': f'Log in to access features', 'likes': movie.likes, 'dislikes': movie.dislikes}
     return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
 
 #user library

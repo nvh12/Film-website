@@ -33,14 +33,21 @@
                 <div class="details__poster">
                     <img style="border-radius: 10px; width: 178px; height: 268px;" src="{{ movie.poster_url }}" alt="">
                 </div>
-                <div class="details__vote" id="movie-{{ movie.id }}-reactions">Likes: {{ movie.likes }} | Dislikes {{ movie.dislikes }}</div>
-                <button class="details__like" id="like" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-thumbs-up"></i> Like</button>
-                <button class="details__dislike" id="dislike" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
+                <div class="details__vote" id="movie-reactions">Likes: {{ movie.likes }} | Dislikes {{ movie.dislikes }}</div>
+                <button class="details__like" id="like" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+                <button class="details__dislike" id="dislike" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
             </div>
             <div class="details__right">
                 <div class="details__watch">
                     <button class="details__watchnow" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
-                    <button class="details__add" id="add" data-movie-title="{{ movie.movie_title|urlencode }}" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-plus"></i> Add to library</button>
+                    {% if current_user.is_authenticated and movie in current_user.movies %}
+                        {% set libraryButtonAction = 'remove' %}
+                        {% set libraryButtonText = 'Remove from library' %}
+                    {% else %}
+                        {% set libraryButtonAction = 'add' %}
+                        {% set libraryButtonText = 'Add to library' %}
+                    {% endif %}
+                    <button class="details__add" id="libraryButton" action="{{ libraryButtonAction }}" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-plus"></i> {{ libraryButtonText }}</button>
                 </div>
                 <h2 class="details__heading-name">{{ movie.movie_title }}</h2>
                 <div class="details__review">
