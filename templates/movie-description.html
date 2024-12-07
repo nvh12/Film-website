@@ -16,7 +16,7 @@
         </li>
         {% set name = movie.movie_title %}
         <li class="prelist">
-            <a href="#" onclick="window.location.href='{{ url_for('description', movie_title=movie.movie_title) }}'; return false;" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
+            <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
         </li>
     </div>
     <div class="cover_img"
@@ -25,7 +25,7 @@
     <div class="container grid">
 
         <div class="kolmj">
-            <a href="#" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}'; return false;" class="d_play">
+            <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}" class="d_play">
                 <i class="fa fa-play"></i></a>
         </div>
         <div class="details__khung"> 

@@ -167,10 +167,12 @@ def watching(movie_title):
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
+    title = unquote(movie_title)
+    path = f"videos/{title}.mp4"
+    movie = Movie.query.filter_by(movie_title = title).first()
     if not movie:
         return "Movie not found", 404
-    return render_template('movie-watching.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
+    return render_template('movie-watching.html', movie = movie, registerForm = registerForm, loginForm = loginForm, path = path)
 
 #movie description
 @app.route('/description/<movie_title>', methods = ['POST', 'GET'])

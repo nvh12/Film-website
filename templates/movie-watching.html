@@ -12,11 +12,9 @@
   <li class="vd-prelist">
     <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
   </li>
-  {% set name = movie.movie_title %}
   <li class="vd-prelist">
     <a
-      href="#"
-      onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title) }}'; return false;"
+      href="{{ url_for}}"
       title="{{ movie.movie_title }}"
       >{{ movie.movie_title }}</a
     >
@@ -24,8 +22,7 @@
 </div>
 <div class="videoplay">
   <video width="1200px" height="600px" controls>
-    <source src="path/to/video.mp4" type="video/mp4" />
-    <source src="path/to/video.webm" type="video/webm" />
+    <source src="{{ url_for('static', filename = path) }}" type="video/mp4" />
     Trình duyệt của bạn không hỗ trợ thẻ video.
   </video>
 </div>
