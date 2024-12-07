@@ -84,6 +84,7 @@ class LoginForm(FlaskForm):
 
 
 #A few functions
+#login and register
 def login_register():
     registerForm = RegisterForm()
     loginForm = LoginForm()
@@ -108,6 +109,34 @@ def login_register():
         else:
             flash('Incorrect username or password!', category = 'danger')
     return loginForm, registerForm
+
+#handling likes, dislikes and library movie additions/removal
+def interactions(movie):
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            if request.is_json:
+                data = request.get_json()
+                action = data.get('action')
+                if action == 'like':
+                    movie.likes += 1
+                    db.session.commit()
+                    return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                elif action == 'dislike':
+                    movie.dislikes += 1
+                    db.session.commit()
+                    return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                elif action == 'add':
+                    if movie not in current_user.movies:
+                        current_user.movies.append(movie)
+                        db.session.commit()
+                        return {'message': f'Movie added to library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                elif action == 'remove':
+                    if movie in current_user.movies:
+                        current_user.movies.remove(movie)
+                        db.session.commit()
+                        return {'message': f'Movie removed from library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+        else:
+            return {'message': f'Log in to access features', 'likes': movie.likes, 'dislikes': movie.dislikes}
 
 
 #Routes
@@ -149,16 +178,40 @@ def movies():
     start = max(1, page - 5)
     end = min(movieQuery.pages, page + 5)
     return render_template('movies.html',
-                           movies = movieQuery.items,
-                           curPage = movieQuery.page,
-                           next = movieQuery.has_next,
-                           prev = movieQuery.has_prev,
-                           nextPage = movieQuery.next_num,
-                           prevPage = movieQuery.prev_num,
-                           noPages = movieQuery.pages,
-                           start = start,
-                           end = end,
-                           registerForm = registerForm, loginForm = loginForm)
+                            movies = movieQuery.items,
+                            curPage = movieQuery.page,
+                            next = movieQuery.has_next,
+                            prev = movieQuery.has_prev,
+                            nextPage = movieQuery.next_num,
+                            prevPage = movieQuery.prev_num,
+                            noPages = movieQuery.pages,
+                            start = start,
+                            end = end,
+                            registerForm = registerForm, loginForm = loginForm)
+
+#genre
+@app.route('/genre/<genre>', methods = ['POST', 'GET'])
+def genre(genre):
+    loginForm, registerForm = login_register()
+    keywords = request.args.get('search')
+    if keywords:
+        return redirect(url_for('results', keywords = keywords))
+    noMovies = 48
+    page = request.args.get('page', default = 1, type  = int)
+    genreList = Movie.query.filter(Movie.genres.ilike(f"%{genre}%")).paginate(page=page, per_page=noMovies, error_out=False)
+    start = max(1, page - 5)
+    end = min(genreList.pages, page + 5)
+    return render_template('genre.html', 
+                            genre = genre,
+                            movies = genreList.items, 
+                            next = genreList.has_next,
+                            prev = genreList.has_prev,
+                            nextPage = genreList.next_num,
+                            prevPage = genreList.prev_num,
+                            noPages = genreList.pages,
+                            start = start,
+                            end = end,
+                            registerForm = registerForm, loginForm = loginForm)
 
 #watching
 @app.route('/watching/<movie_title>', methods = ['POST', 'GET'])
@@ -167,9 +220,8 @@ def watching(movie_title):
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    title = unquote(movie_title)
-    path = f"videos/{title}.mp4"
-    movie = Movie.query.filter_by(movie_title = title).first()
+    movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
+    path = f"videos/{movie.id}.mp4"
     if not movie:
         return "Movie not found", 404
     return render_template('movie-watching.html', movie = movie, registerForm = registerForm, loginForm = loginForm, path = path)
@@ -184,32 +236,9 @@ def description(movie_title):
     movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
     if not movie:
         return "Movie not found", 404
-    if request.method == 'POST':
-        if current_user.is_authenticated:
-            if request.is_json:
-                data = request.get_json()
-                action = data.get('action')
-                id = data.get('id')
-                if action == 'like':
-                    movie.likes += 1
-                    db.session.commit()
-                    return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'dislike':
-                    movie.dislikes += 1
-                    db.session.commit()
-                    return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'add':
-                    if movie not in current_user.movies:
-                        current_user.movies.append(movie)
-                        db.session.commit()
-                        return {'message': f'Movie added to library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'remove':
-                    if movie in current_user.movies:
-                        current_user.movies.remove(movie)
-                        db.session.commit()
-                        return {'message': f'Movie removed from library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-        else:
-            return {'message': f'Log in to access features', 'likes': movie.likes, 'dislikes': movie.dislikes}
+    interaction = interactions(movie)
+    if interaction:
+        return interaction
     return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
 
 #user library
