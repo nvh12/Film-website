@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
@@ -148,7 +149,11 @@ def index():
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    return render_template('index.html', registerForm = registerForm, loginForm = loginForm)
+    mostRecent = Movie.query.order_by(desc(Movie.release_date)).limit(16).all()
+    mostLiked = Movie.query.order_by(desc(Movie.likes)).limit(16).all()
+    mostDisliked = Movie.query.order_by(desc(Movie.dislikes)).limit(16).all()
+    return render_template('index.html', registerForm = registerForm, loginForm = loginForm,
+                            mostRecent = mostRecent, mostLiked = mostLiked, mostDisliked = mostDisliked)
 
 @app.route('/logout')
 def logout():
@@ -221,12 +226,13 @@ def watching(movie_title):
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
+    title = unquote(movie_title)
+    movie = Movie.query.filter_by(movie_title = title).first()
     path = f"videos/{movie.id}.mp4"
     if not movie:
         return "Movie not found", 404
-    list = suggest_algo(movie_title)
-    movies = Movie.query.filter(Movie.id.in_(list)).all()
+    list = suggest_algo.suggest(title)
+    movies = Movie.query.filter(Movie.movie_title.in_(list)).all()
     return render_template('movie-watching.html', movie = movie, movies = movies, registerForm = registerForm, loginForm = loginForm, path = path)
 
 #movie description

@@ -189,33 +189,42 @@
         </div>
         <section class="film-area">
           <div class="film-area__header">
-            <h2 class="film-area__title">Trending</h2>
+            <h2 class="film-area__title">Upcoming and latest</h2>
             <div class="film-area__tabs"></div>
           </div>
           <div class="grid__row">
-            {% for i in range(16) %}
+            {% for movie in mostRecent %}
             <div class="grid__column-8">
               <a href="" class="film">
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
+                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                    title="{{ movie.movie_title }}">
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </a>
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
+                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                      title="{{ movie.movie_title }}">
+                      {{ movie.movie_title }}
                     </a>
                   </h3>
                   <div class="film__infor">
                     <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
+                      <span class="film__infor--year">
+                        {% if movie.release_date %} {{
+                        movie.release_date.strftime('%Y') }} {% else %} Unknown {%
+                        endif %}
+                      </span>
                       <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
+                      <span class="film__infor--minute">
+                        {% if movie.runtime == 0 %} Unknown {% else %} {{
+                        movie.runtime }} min {% endif %}
+                      </span>
                     </div>
                     <span class="film__infor--type">Movie</span>
                   </div>
@@ -227,33 +236,42 @@
         </section>
         <section class="film-area">
           <div class="film-area__header">
-            <h2 class="film-area__title">Lastest Movie</h2>
+            <h2 class="film-area__title">Most liked</h2>
             <div class="film-area__tabs"></div>
           </div>
           <div class="grid__row">
-            {% for i in range(16) %}
+            {% for movie in mostLiked %}
             <div class="grid__column-8">
               <a href="" class="film">
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
+                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                    title="{{ movie.movie_title }}">
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </a>
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
+                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                      title="{{ movie.movie_title }}">
+                      {{ movie.movie_title }}
                     </a>
                   </h3>
                   <div class="film__infor">
                     <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
+                      <span class="film__infor--year">
+                        {% if movie.release_date %} {{
+                        movie.release_date.strftime('%Y') }} {% else %} Unknown {%
+                        endif %}
+                      </span>
                       <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
+                      <span class="film__infor--minute">
+                        {% if movie.runtime == 0 %} Unknown {% else %} {{
+                        movie.runtime }} min {% endif %}
+                      </span>
                     </div>
                     <span class="film__infor--type">Movie</span>
                   </div>
@@ -265,33 +283,42 @@
         </section>
         <section class="film-area">
           <div class="film-area__header">
-            <h2 class="film-area__title">Coming Soon</h2>
+            <h2 class="film-area__title">Most disliked</h2>
             <div class="film-area__tabs"></div>
           </div>
           <div class="grid__row">
-            {% for i in range(16) %}
+            {% for movie in mostDisliked %}
             <div class="grid__column-8">
               <a href="" class="film">
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
-                  <img
-                    src="https://m.media-amazon.com/images/M/MV5BZDMyYWU4NzItZDY0MC00ODE2LTkyYTMtMzNkNDdmYmFhZDg0XkEyXkFqcGc@._V1_.jpg"
-                    alt="" class="film__img" />
-                  <div class="film__play">
-                    <i class="fa fa-play"></i>
-                  </div>
+                  <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
+                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                    title="{{ movie.movie_title }}">
+                    <div class="film__play">
+                      <i class="fa fa-play"></i>
+                    </div>
+                  </a>
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="" class="film__link" title="hehe">
-                      Venom:Till dead to they part
+                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                      title="{{ movie.movie_title }}">
+                      {{ movie.movie_title }}
                     </a>
                   </h3>
                   <div class="film__infor">
                     <div class="film__infor--container">
-                      <span class="film__infor--year">2024</span>
+                      <span class="film__infor--year">
+                        {% if movie.release_date %} {{
+                        movie.release_date.strftime('%Y') }} {% else %} Unknown {%
+                        endif %}
+                      </span>
                       <span class="dot"></span>
-                      <span class="film__infor--minute">120m</span>
+                      <span class="film__infor--minute">
+                        {% if movie.runtime == 0 %} Unknown {% else %} {{
+                        movie.runtime }} min {% endif %}
+                      </span>
                     </div>
                     <span class="film__infor--type">Movie</span>
                   </div>
@@ -349,7 +376,7 @@
             Don't have an account? Register
           </button>
 
-            {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
+          {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
           background-color: #007bff; border: none; border-radius: 5px; color:
           white; cursor: pointer; font-size: 16px")}}
         </form>
@@ -414,7 +441,7 @@
             Already have an account? Login
           </button>
 
-            {{ registerForm.submit(class="btn btn-primary", style="padding:
+          {{ registerForm.submit(class="btn btn-primary", style="padding:
           10px; background-color: #007bff; border: none; border-radius: 5px;
           color: white; cursor: pointer; font-size: 16px")}}
         </form>

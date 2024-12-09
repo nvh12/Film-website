@@ -69,8 +69,9 @@ class Suggestion:
 def suggest(title):
     conn = sqlite3.connect('instance/Database.db')
     query = "SELECT * FROM suggestion_table WHERE strftime('%Y', release_date) >= '2010'"
+    target_query = f"SELECT * FROM suggestion_table WHERE movie_title = '{title}'"
     movie_db = pd.read_sql_query(query, conn)
-    movie = movie_db.query(f"movie_title == '{title}'")
+    movie = pd.read_sql_query(target_query, conn)
     documents = movie_db['comb']
     tf_idf_vectorize = TFIDFVectorizer()
     tfidf_matrix = tf_idf_vectorize.fit_transform(documents)
