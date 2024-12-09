@@ -64,7 +64,7 @@ class Suggestion:
         for i in movieID.index:
             distances.append([self.distance(X[i] - vector), movieID[i]])
         distances.sort()
-        return [distances[i][1] for i in range(1,11)]
+        return [distances[i][1] for i in range(1,17)]
 
 def suggest(title):
     conn = sqlite3.connect('instance/Database.db')
@@ -77,5 +77,5 @@ def suggest(title):
     suggest = Suggestion()
     return suggest.get_suggestion(movie, movie_db, tfidf_matrix, tf_idf_vectorize)
 
-print(suggest('Puss in Boots'))
+
 
