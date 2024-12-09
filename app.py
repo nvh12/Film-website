@@ -7,6 +7,7 @@ from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationE
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
 from urllib.parse import unquote
+import suggest_algo
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
@@ -224,7 +225,9 @@ def watching(movie_title):
     path = f"videos/{movie.id}.mp4"
     if not movie:
         return "Movie not found", 404
-    return render_template('movie-watching.html', movie = movie, registerForm = registerForm, loginForm = loginForm, path = path)
+    list = suggest_algo(movie_title)
+    movies = Movie.query.filter(Movie.id.in_(list)).all()
+    return render_template('movie-watching.html', movie = movie, movies = movies, registerForm = registerForm, loginForm = loginForm, path = path)
 
 #movie description
 @app.route('/description/<movie_title>', methods = ['POST', 'GET'])
@@ -233,13 +236,16 @@ def description(movie_title):
     keywords = request.args.get('search')
     if keywords:
         return redirect(url_for('results', keywords = keywords))
-    movie = Movie.query.filter_by(movie_title = unquote(movie_title)).first()
+    title = unquote(movie_title)
+    movie = Movie.query.filter_by(movie_title = title).first()
     if not movie:
         return "Movie not found", 404
+    list = suggest_algo.suggest(title)
+    movies = Movie.query.filter(Movie.movie_title.in_(list)).all()
     interaction = interactions(movie)
     if interaction:
         return interaction
-    return render_template('movie-description.html', movie = movie, registerForm = registerForm, loginForm = loginForm)
+    return render_template('movie-description.html', movie = movie, movies = movies, registerForm = registerForm, loginForm = loginForm)
 
 #user library
 @app.route('/library', methods = ['POST', 'GET'])

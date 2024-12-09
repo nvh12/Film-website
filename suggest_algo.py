@@ -2,6 +2,8 @@ from collections import Counter, defaultdict
 import numpy as np
 import pandas as pd
 import requests
+from tmdbv3api import TMDb, Movie
+import sqlite3
 
 # class for vectorizing the movie feature like actor1_name, director_name, genres
 class TFIDFVectorizer:
@@ -50,83 +52,30 @@ class TFIDFVectorizer:
     def tokenize(self, document):
         return document.split(", ")
 
-
-# get the director_name, actor1_name, ... etc for the new movie input
-class TMDB:
-    def __init__(self):
-        self.headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTBhYmZkNTJiYjZjMjkwYzVjMTIzZDZiNjlkODNjYiIsIm5iZiI6MTcyOTM1MzA2NS44MTA5MTgsInN1YiI6IjY2ZjI3NWU0YTgyYjAwNTcwMzI2ZDIxZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.k1dQkNkB_2phSel35QLQSzoz98UoBve1fMRzHJyESKk"
-        }
-
-    def get_genres(self, movie_id):
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}?language=en-US"
-        response = requests.get(url, headers= self.headers)
-        data = response.json()
-        genres = ''
-        for i in data['genres']:
-            genres += i['name'] + ', '
-        return genres[:-2]
-    
-    def get_director_cast(self, movie_id):
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?language=en-US"
-        response = requests.get(url, headers = self.headers)
-        casts = response.json()['cast']
-        director = response.json()['crew']
-        actor1 = None 
-        actor2 = None
-        actor3 = None
-        n = len(casts)
-        if n >= 3:
-            actor1, actor2, actor3 = [casts[i]['name'] for i in range(3)]
-        else:
-            actor1, actor2, actor3 = [casts[i]['name'] for i in range(n)] + [None * (3 - n)]
-        director = director[0]['name']
-        return actor1 + ', ' + actor2 + ', ' + actor3 + ', ' + director
-
-from tmdbv3api import TMDb, Movie
-tmdb = TMDb()
-tmdb.api_key = '9a0abfd52bb6c290c5c123d6b69d83cb'
-tmdb_movie = Movie()
-TMDB  = TMDB()
-
 class Suggestion:
     def distance(self, vector):
         return np.linalg.norm(vector)
     
-    def get_suggestion(self, movie_title):
-        result = tmdb_movie.search(movie_title)
-        movie_id = result[0].id
-        comb = (TMDB.get_director_cast(movie_id) +', '+ TMDB.get_genres(movie_id)).lower()
-        print(comb)
-        vector = tf_idf_vectorize.transform([comb])[0]
+    def get_suggestion(self, movie, movie_db, X, vectorizer):
+        comb = movie['comb'].iloc[0]
+        vector = vectorizer.transform([comb])[0]
         distances = []
-        movie = movie_db['title']
-        for i in movie.index:
-            distances.append([self.distance(X[i] - vector), movie[i]])
+        movieID = movie_db['movie_title']
+        for i in movieID.index:
+            distances.append([self.distance(X[i] - vector), movieID[i]])
         distances.sort()
         return [distances[i][1] for i in range(1,11)]
 
-tf_idf_vectorize = TFIDFVectorizer()
+def suggest(title):
+    conn = sqlite3.connect('instance/Database.db')
+    query = "SELECT * FROM suggestion_table WHERE strftime('%Y', release_date) >= '2010'"
+    movie_db = pd.read_sql_query(query, conn)
+    movie = movie_db.query(f"movie_title == '{title}'")
+    documents = movie_db['comb']
+    tf_idf_vectorize = TFIDFVectorizer()
+    tfidf_matrix = tf_idf_vectorize.fit_transform(documents)
+    suggest = Suggestion()
+    return suggest.get_suggestion(movie, movie_db, tfidf_matrix, tf_idf_vectorize)
 
-# replace 'file_name.csv' with a specific file
+print(suggest('Puss in Boots'))
 
-movie_db = pd.read_csv("'file_name'.csv")
-movie_db.dropna(how = 'any', inplace=True)
-movie_db.reset_index(drop = True, inplace = True)
-def strip(feature):
-    movie_db[feature] = movie_db[feature].apply(lambda x: x.strip())
-strip_features = ['director_name','actor_1_name','actor_2_name','actor_3_name']
-for i in strip_features:
-    strip(i)
-movie_db['comb'] = movie_db['actor_1_name'].str.lower() + ", " + movie_db['actor_2_name'].str.lower() + ", " + movie_db['actor_3_name'].str.lower() + ", " + movie_db['director_name'].str.lower() + ", " + movie_db['genres'].str.lower()
-
-# vectorize the features
-documents = movie_db['comb']
-X = tf_idf_vectorize.fit_transform(documents)
-
-# input the movie you want to suggest here
-input_movie = ""
-suggest = Suggestion()
-suggested_movies = suggest.get_suggestion(input)
-print(suggested_movies)
