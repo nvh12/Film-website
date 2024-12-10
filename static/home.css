@@ -30,9 +30,9 @@
   width: 100%;
 }
 
-.navbar__genre,
-.navbar__country {
+.navbar__genre {
   position: relative;
+  cursor: pointer;
 }
 
 .navbar__item-link {
@@ -52,7 +52,7 @@
 .navbar__typelist {
   display: none;
   position: absolute;
-  top: 25px;
+  top: 20px;
   left: 50%;
   width: 700px;
   background: #fff;
@@ -201,19 +201,19 @@
 /* for the flash messages */
 @keyframes fadeout {
   0% {
-    opacity: 1; 
+    opacity: 1;
   }
   80% {
-    opacity: 0; 
+    opacity: 0;
   }
   100% {
-    opacity: 0; 
-    display: none; 
+    opacity: 0;
+    display: none;
   }
 }
 
 .alert {
-  animation: fadeout 5s forwards; 
+  animation: fadeout 5s forwards;
 }
 
 .content {
