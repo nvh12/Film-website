@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify, session
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
@@ -8,15 +8,26 @@ from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationE
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, UserMixin, current_user, login_required
 from urllib.parse import unquote
+from datetime import datetime, timedelta
 import suggest_algo
+from email_sending import init, send
+from recovery_passcode import passcode_generation, passcode_check
+from config import mail_username, mail_password
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '2a0f76e24979a57e'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = mail_username
+app.config['MAIL_PASSWORD'] = mail_password
+app.config['MAIL_DEFAULT_SENDER'] = mail_username
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 loginManager = LoginManager(app)
+init(app)
 
 @loginManager.user_loader
 def load_user(userId):
@@ -83,6 +94,17 @@ class LoginForm(FlaskForm):
     username = StringField(label='Username: ', validators=[Length(min=4, max=40), DataRequired()])
     password = PasswordField(label='Password: ', validators=[Length(min=8), DataRequired()])
     submit = SubmitField(label='Log in')
+
+class EmailForm(FlaskForm):
+    email = StringField(label='Email: ', validators=[Email(), DataRequired()])
+    submit = SubmitField(label='Submit')
+
+class ResetForm(FlaskForm):
+    code = StringField(label='Code: ', validators=[DataRequired()])
+    username = StringField(label='Username: ', validators=[Length(min=4, max=40), DataRequired()])
+    password1 = PasswordField(label='Password: ', validators=[Length(min=8), DataRequired()])
+    password2 = PasswordField(label='Confirm password: ', validators=[EqualTo('password1'), DataRequired()])
+    submit = SubmitField(label='Submit')
 
 
 #A few functions
@@ -154,6 +176,50 @@ def index():
     mostDisliked = Movie.query.order_by(desc(Movie.dislikes)).limit(16).all()
     return render_template('index.html', registerForm = registerForm, loginForm = loginForm,
                             mostRecent = mostRecent, mostLiked = mostLiked, mostDisliked = mostDisliked)
+
+@app.route('/recovery', methods = ['POST', 'GET'])
+def recovery():
+    loginForm, registerForm = login_register()
+    if 'step' not in session:
+        session['step'] = 1
+    emailForm = EmailForm()
+    resetForm = ResetForm()
+    if session['step'] == 1:
+        if emailForm.validate_on_submit():
+            session['email'] = emailForm.email.data
+            user = User.query.filter_by(email=session['email']).first()
+            if user:
+                code = passcode_generation()
+                session['code'] = code
+                session['expiry_time'] = datetime.now() + timedelta(minutes = 10)
+                send(code, [emailForm.email.data])
+                flash('A recovery code has been sent to your email.', 'info')
+                session['step'] = 2
+                return redirect(url_for('recovery'))
+            else:
+                flash('Email address is not associated with any account!', 'info')
+        return render_template('recovery.html', registerForm = registerForm, loginForm = loginForm, form = emailForm, step = 1)
+    elif session['step'] == 2:
+        if resetForm.validate_on_submit():
+            print(f"Session code: {session.get('code')}")
+            print(f"Entered code: {resetForm.code}")
+            print(f"Expiry time: {session.get('expiry_time')}")
+            if passcode_check(session.get('code'), resetForm.code.data) and datetime.now().replace(tzinfo=None) <= session.get('expiry_time').replace(tzinfo=None):
+                user = User.query.filter_by(email=session.get('email')).first()
+                user.username = resetForm.username.data
+                user.password = resetForm.password1.data
+                db.session.commit()
+                session.clear()
+                flash('Account updated!', 'info')
+                return redirect(url_for('index'))
+            else:
+                flash('Incorrect or expired recovery code!', 'info')
+        return render_template('recovery.html', registerForm = registerForm, loginForm = loginForm, form = resetForm, step = 2)
+
+@app.route('/reset_recovery', methods = ['POST'])
+def reset_recovery():
+    session.clear()
+    return '', 204
 
 @app.route('/logout')
 def logout():

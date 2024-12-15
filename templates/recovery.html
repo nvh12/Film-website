@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<h2>Account recovery</h2>
+{% if step == 1 %}
+<form method="POST" style="display: flex; flex-direction: column; gap: 20px">
+    {{ form.hidden_tag() }}
+    <div style="display: flex; flex-direction: column">
+        {{ form.email.label(style="color: #333; font-weight: bold;
+        margin-bottom: 5px;") }} {{
+        form.email(class="form-control", placeholder="Enter
+        Email", style="padding: 10px; border-radius: 5px; border: 1px
+        solid #ced4da;") }}
+    </div>
+    {{ form.submit(class="btn btn-primary", style="padding: 10px;
+    background-color: #007bff; border: none; border-radius: 5px; color:
+    white; cursor: pointer; font-size: 16px")}}
+</form>
+{% elif step == 2 %}
+<form method="POST" style="display: flex; flex-direction: column; gap: 20px">
+    {{ form.hidden_tag() }}
+    <div style="display: flex; flex-direction: column">
+        {{ form.code.label(style="color: #333; font-weight: bold;
+        margin-bottom: 5px;") }} {{
+        form.code(class="form-control", placeholder="Enter
+        Code", style="padding: 10px; border-radius: 5px; border: 1px
+        solid #ced4da;") }}
+    </div>
+    <div style="display: flex; flex-direction: column">
+        {{ form.username.label(style="color: #333; font-weight: bold;
+        margin-bottom: 5px;") }} {{
+        form.username(class="form-control", placeholder="Enter
+        Username", style="padding: 10px; border-radius: 5px; border: 1px
+        solid #ced4da;") }}
+    </div>
+    <div style="display: flex; flex-direction: column">
+        {{ form.password1.label(style="color: #333; font-weight:
+        bold; margin-bottom: 5px;") }} {{
+        form.password1(class="form-control", placeholder="Enter
+        Password", style="padding: 10px; border-radius: 5px; border: 1px
+        solid #ced4da;") }}
+      </div>
+
+      <div style="display: flex; flex-direction: column">
+        {{ form.password2.label(style="color: #333; font-weight:
+        bold; margin-bottom: 5px;") }} {{
+        form.password2(class="form-control", placeholder="Confirm
+        Password", style="padding: 10px; border-radius: 5px; border: 1px
+        solid #ced4da;") }}
+      </div>
+    {{ form.submit(class="btn btn-primary", style="padding: 10px;
+    background-color: #007bff; border: none; border-radius: 5px; color:
+    white; cursor: pointer; font-size: 16px")}}
+</form>
+{% endif %}
+<script>
+    if (!sessionStorage.getItem('visited')) {
+        sessionStorage.setItem('visited', 'true');
+    } else {
+        window.isReloading = true;
+    }
+    window.addEventListener('beforeunload', () => {
+        if (!window.isReloading) {
+            navigator.sendBeacon('/reset_recovery');
+            sessionStorage.removeItem('visited');
+        }
+    });
+</script>
+{% endblock %}
