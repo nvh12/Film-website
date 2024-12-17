@@ -50,9 +50,6 @@
                     <button class="details__add" id="libraryButton" action="{{ libraryButtonAction }}" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-plus"></i> {{ libraryButtonText }}</button>
                 </div>
                 <h2 class="details__heading-name">{{ movie.movie_title }}</h2>
-                <div class="details__review">
-                    <button style="height: 35px; width: 80px; margin-right: 10px;"><i class="fa-solid fa-video"></i> Trailer</button>
-                </div>
                 <div class="details__description">{{ movie.overview }}</div>
                 <div class="details__elements">
                     <div id="details__element1">

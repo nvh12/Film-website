@@ -10,8 +10,8 @@ from flask_login import LoginManager, login_user, logout_user, UserMixin, curren
 from urllib.parse import unquote
 from datetime import datetime, timedelta
 import suggest_algo
-from email_sending import init, send
-from recovery_passcode import passcode_generation, passcode_check
+import email_sending
+import recovery_passcode
 from config import mail_username, mail_password
 
 app = Flask(__name__)
@@ -27,7 +27,7 @@ app.config['MAIL_DEFAULT_SENDER'] = mail_username
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 loginManager = LoginManager(app)
-init(app)
+email_sending.init(app)
 
 @loginManager.user_loader
 def load_user(userId):
@@ -42,7 +42,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique = True, nullable = False)
     passwordHash = db.Column(db.String(60), nullable = False)
     
-    movies = db.relationship('Movie', secondary = 'user_movie', back_populates = 'users')
+    movies = db.relationship('Movie', secondary = 'user_movie')
+    liked_movies = db.relationship('Movie', secondary = 'like')
+    disliked_movies = db.relationship('Movie', secondary = 'dislike')
 
     @property
     def password(self):
@@ -74,13 +76,24 @@ class Movie(db.Model):
     likes = db.Column(db.Integer, nullable = False)
     dislikes = db.Column(db.Integer, nullable = False)
 
-    users = db.relationship('User', secondary = 'user_movie', back_populates = 'movies')
+    users = db.relationship('User', secondary = 'user_movie')
+    liked_users = db.relationship('User', secondary = 'like')
+    disliked_users = db.relationship('User', secondary = 'dislike')
 
 class UserMovie(db.Model):
     __tablename__ = 'user_movie'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True, nullable = False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), primary_key = True, nullable = False)
 
+class Like(db.Model):
+    __tablename__ = 'like'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True, nullable = False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), primary_key = True, nullable = False)
+
+class Dislike(db.Model):
+    __tablename__ = 'dislike'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key = True, nullable = False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'), primary_key = True, nullable = False)
 
 #Forms
 class RegisterForm(FlaskForm):
@@ -142,13 +155,27 @@ def interactions(movie):
                 data = request.get_json()
                 action = data.get('action')
                 if action == 'like':
-                    movie.likes += 1
-                    db.session.commit()
-                    return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                    if movie not in current_user.liked_movies:
+                        movie.likes += 1
+                        current_user.liked_movies.append(movie)
+                        if movie in current_user.disliked_movies:
+                            current_user.disliked_movies.remove(movie)
+                            movie.dislikes -= 1
+                        db.session.commit()
+                        return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                    else:
+                        return {'message': f'Already liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
                 elif action == 'dislike':
-                    movie.dislikes += 1
-                    db.session.commit()
-                    return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                    if movie not in current_user.disliked_movies:
+                        movie.dislikes += 1
+                        current_user.disliked_movies.append(movie)
+                        if movie in current_user.liked_movies:
+                            current_user.liked_movies.remove(movie)
+                            movie.likes -= 1
+                        db.session.commit()
+                        return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
+                    else:
+                        return {'message': f'Already disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
                 elif action == 'add':
                     if movie not in current_user.movies:
                         current_user.movies.append(movie)
@@ -189,10 +216,10 @@ def recovery():
             session['email'] = emailForm.email.data
             user = User.query.filter_by(email=session['email']).first()
             if user:
-                code = passcode_generation()
+                code = recovery_passcode.passcode_generation()
                 session['code'] = code
                 session['expiry_time'] = datetime.now() + timedelta(minutes = 10)
-                send(code, [emailForm.email.data])
+                email_sending.send(code, [emailForm.email.data])
                 flash('A recovery code has been sent to your email.', 'info')
                 session['step'] = 2
                 return redirect(url_for('recovery'))
@@ -204,7 +231,7 @@ def recovery():
             print(f"Session code: {session.get('code')}")
             print(f"Entered code: {resetForm.code}")
             print(f"Expiry time: {session.get('expiry_time')}")
-            if passcode_check(session.get('code'), resetForm.code.data) and datetime.now().replace(tzinfo=None) <= session.get('expiry_time').replace(tzinfo=None):
+            if recovery_passcode.passcode_check(session.get('code'), resetForm.code.data) and datetime.now().replace(tzinfo=None) <= session.get('expiry_time').replace(tzinfo=None):
                 user = User.query.filter_by(email=session.get('email')).first()
                 user.username = resetForm.username.data
                 user.password = resetForm.password1.data
