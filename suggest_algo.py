@@ -6,44 +6,46 @@ from tmdbv3api import TMDb, Movie
 import sqlite3
 
 # class for vectorizing the movie feature like actor1_name, director_name, genres
-class TFIDFVectorizer:
+class Onehotencoding:
     def __init__(self):
         self.vocab = {}
-        self.idf_values = {}
     
     def fit(self, documents):
-        # Create vocabulary and calculate document frequencies for each term
-        doc_count = len(documents)
-        doc_frequency = defaultdict(int)
+        """
+        Builds a vocabulary of unique terms from the given documents.
+        """
+        terms = set()  # Use a set to ensure unique terms across all documents
         
         for doc in documents:
             tokens = self.tokenize(doc)
-            unique_tokens = set(tokens)  # Only count each term once per document
-            for token in unique_tokens:
-                doc_frequency[token] += 1
+            terms.update(tokens)  # Add all unique tokens from this document to the set
         
-        # Create vocabulary and compute IDF
-        self.vocab = {term: idx for idx, term in enumerate(doc_frequency)}
-
-        # Plus 1 for smoothing technique
-        self.idf_values = {term: np.log(doc_count / (1 + doc_frequency[term])) for term in doc_frequency}
+        # Create a mapping from term to index
+        self.vocab = {term: idx for idx, term in enumerate(sorted(terms))}
 
     def transform(self, documents):
-        # Initialize TF-IDF matrix
-        tfidf_matrix = np.zeros((len(documents), len(self.vocab)))
+        """
+        Transforms documents into a one-hot encoded matrix based on the vocabulary.
+        """
+        # Initialize a zero matrix for one-hot encoding
+        ohe_matrix = np.zeros((len(documents), len(self.vocab)), dtype=int)
         
         for i, doc in enumerate(documents):
             tokens = self.tokenize(doc)
-            term_counts = Counter(tokens)
-            doc_length = len(tokens)
+            unique_tokens = set(tokens)  # One-hot encoding only considers presence
             
-            for term, count in term_counts.items():
+            for term in unique_tokens:
                 if term in self.vocab:
-                    tf = count / doc_length
-                    idf = self.idf_values[term]
-                    tfidf_matrix[i, self.vocab[term]] = tf * idf
+                    ohe_matrix[i, self.vocab[term]] = 1  # Mark presence as 1
         
-        return tfidf_matrix
+        return ohe_matrix
+
+    def fit_transform(self, documents):
+        self.fit(documents)
+        return self.transform(documents)
+
+    def tokenize(self, document):
+        return document.split(", ")
 
     def fit_transform(self, documents):
         self.fit(documents)
@@ -73,10 +75,10 @@ def suggest(title):
     movie_db = pd.read_sql_query(query, conn)
     movie = pd.read_sql_query(target_query, conn)
     documents = movie_db['comb']
-    tf_idf_vectorize = TFIDFVectorizer()
-    tfidf_matrix = tf_idf_vectorize.fit_transform(documents)
+    ohe_vectorize = Onehotencoding()
+    ohe_matrix = ohe_vectorize.fit_transform(documents)
     suggest = Suggestion()
-    return suggest.get_suggestion(movie, movie_db, tfidf_matrix, tf_idf_vectorize)
+    return suggest.get_suggestion(movie, movie_db, ohe_matrix, ohe_vectorize)
 
 
 
