@@ -36,33 +36,33 @@
               <p class="navbar__item-link" href="">Genre</p>
               <ul class="navbar__typelist">
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Action')}}" class="navbar__typelist--link">Action</a>
+                  <a href="{{ url_for('main.genre', genre = 'Action')}}" class="navbar__typelist--link">Action</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Comedy')}}" class="navbar__typelist--link">Comedy</a>
+                  <a href="{{ url_for('main.genre', genre = 'Comedy')}}" class="navbar__typelist--link">Comedy</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Drama')}}" class="navbar__typelist--link">Drama</a>
+                  <a href="{{ url_for('main.genre', genre = 'Drama')}}" class="navbar__typelist--link">Drama</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Horror')}}" class="navbar__typelist--link">Horror</a>
+                  <a href="{{ url_for('main.genre', genre = 'Horror')}}" class="navbar__typelist--link">Horror</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Sci-Fi')}}" class="navbar__typelist--link">Sci-Fi</a>
+                  <a href="{{ url_for('main.genre', genre = 'Sci-Fi')}}" class="navbar__typelist--link">Sci-Fi</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Fantasy')}}" class="navbar__typelist--link">Fantasy</a>
+                  <a href="{{ url_for('main.genre', genre = 'Fantasy')}}" class="navbar__typelist--link">Fantasy</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Romance')}}" class="navbar__typelist--link">Romance</a>
+                  <a href="{{ url_for('main.genre', genre = 'Romance')}}" class="navbar__typelist--link">Romance</a>
                 </li>
                 <li class="navbar__typelist--item">
-                  <a href="{{ url_for('genre', genre = 'Thriller')}}" class="navbar__typelist--link">Thriller</a>
+                  <a href="{{ url_for('main.genre', genre = 'Thriller')}}" class="navbar__typelist--link">Thriller</a>
                 </li>
               </ul>
             </li>
             <li class="navbar__item">
-              <a class="navbar__item-link" href="{{ url_for('movies')}}">Movies</a>
+              <a class="navbar__item-link" href="{{ url_for('main.movies')}}">Movies</a>
             </li>
             <li class="navbar__item">
               <a class="navbar__item-link" href="https://www.imdb.com/chart/top/">Top IMDB</a>
@@ -71,13 +71,13 @@
           {% if current_user.is_authenticated %}
           <div class="navbar__login-container">
             <div class="navbar__login">
-              <a class="navbar__login--link" href="{{ url_for('library') }}">
+              <a class="navbar__login--link" href="{{ url_for('main.library') }}">
                 <i class="fa-regular fa-user navbar__login--icon"></i>
                 {{ current_user.username }}
               </a>
             </div>
             <div class="navbar__login">
-              <a class="navbar__login--link" href="{{ url_for('logout')}}">
+              <a class="navbar__login--link" href="{{ url_for('main.logout')}}">
                 Logout
               </a>
             </div>
@@ -199,7 +199,7 @@
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
                   <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                  <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
                     title="{{ movie.movie_title }}">
                     <div class="film__play">
                       <i class="fa fa-play"></i>
@@ -208,7 +208,7 @@
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                    <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
                       title="{{ movie.movie_title }}">
                       {{ movie.movie_title }}
                     </a>
@@ -246,7 +246,7 @@
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
                   <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                  <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
                     title="{{ movie.movie_title }}">
                     <div class="film__play">
                       <i class="fa fa-play"></i>
@@ -255,7 +255,7 @@
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                    <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
                       title="{{ movie.movie_title }}">
                       {{ movie.movie_title }}
                     </a>
@@ -293,7 +293,7 @@
                 <div class="film__poster">
                   <div class="film__quality">HD</div>
                   <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-                  <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                  <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
                     title="{{ movie.movie_title }}">
                     <div class="film__play">
                       <i class="fa fa-play"></i>
@@ -302,7 +302,7 @@
                 </div>
                 <div class="film__details">
                   <h3 class="film__name">
-                    <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
+                    <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
                       title="{{ movie.movie_title }}">
                       {{ movie.movie_title }}
                     </a>
@@ -402,7 +402,7 @@
                 background-color: white;
                 cursor: pointer;
               " class>
-            <a href="{{ url_for('recovery')}}">Forgot username or password? Recover with email</a>
+            <a href="{{ url_for('main.recovery')}}">Forgot username or password? Recover with email</a>
           </button>
 
           {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;

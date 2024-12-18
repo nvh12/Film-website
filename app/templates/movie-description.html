@@ -9,14 +9,14 @@
 <div class="content">
     <div class="prebread">
         <li class="prelist">
-            <a href="{{ url_for('index')}}" title="Home">Home /</a>
+            <a href="{{ url_for('main.index')}}" title="Home">Home /</a>
         </li>
         <li class="prelist">
-            <a href="{{ url_for('movies')}}" title="Movies">Movies /</a>
+            <a href="{{ url_for('main.movies')}}" title="Movies">Movies /</a>
         </li>
         {% set name = movie.movie_title %}
         <li class="prelist">
-            <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
+            <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" title="{{ movie.movie_title }}">{{ movie.movie_title }}</a>
         </li>
     </div>
     <div class="cover_img"
@@ -25,7 +25,7 @@
     <div class="container grid">
 
         <div class="kolmj">
-            <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}" class="d_play">
+            <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}" class="d_play">
                 <i class="fa fa-play"></i></a>
         </div>
         <div class="details__khung"> 
@@ -39,7 +39,7 @@
             </div>
             <div class="details__right">
                 <div class="details__watch">
-                    <button class="details__watchnow" onclick="window.location.href='{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
+                    <button class="details__watchnow" onclick="window.location.href='{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}'; return false;" title="Watch now"><i class="fa-solid fa-play"></i>        Watch now</button>
                     {% if current_user.is_authenticated and movie in current_user.movies %}
                         {% set libraryButtonAction = 'remove' %}
                         {% set libraryButtonText = 'Remove from library' %}
@@ -84,7 +84,7 @@
             <div class="film__poster">
               <div class="film__quality">HD</div>
               <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-              <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+              <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
                 title="{{ movie.movie_title }}">
                 <div class="film__play">
                   <i class="fa fa-play"></i>
@@ -93,7 +93,7 @@
             </div>
             <div class="film__details">
               <h3 class="film__name">
-                <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}"
+                <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}"
                   class="film__link" title="{{ movie.movie_title }}">
                   {{ movie.movie_title }}
                 </a>

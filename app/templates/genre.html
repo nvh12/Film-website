@@ -3,26 +3,26 @@
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
 <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
-<title>Library</title>
+<link rel="stylesheet" href="{{ url_for('static', filename = 'movie.css')}}" />
+<title>{{ genre }}</title>
 {% endblock %}
 
 {% block content %}
 <br />
 <div class="grid">
-    {% if current_user.is_authenticated %}
     <section class="film-area">
         <div class="film-area__header">
-            <h2 class="film-area__title">Library</h2>
+            <h2 class="film-area__title">Genre : {{ genre }}</h2>
             <div class="film-area__tabs"></div>
         </div>
         <div class="grid__row">
-            {% for movie in library %}
+            {% for movie in movies %}
             <div class="grid__column-8">
                 <a href="" class="film">
                     <div class="film__poster">
                         <div class="film__quality">HD</div>
                         <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-                        <a href="{{ url_for('watching', movie_title=movie.movie_title|urlencode) }}"
+                        <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
                             title="{{ movie.movie_title }}">
                             <div class="film__play">
                                 <i class="fa fa-play"></i>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="film__details">
                         <h3 class="film__name">
-                            <a href="{{ url_for('description', movie_title=movie.movie_title|urlencode) }}"
+                            <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}"
                                 class="film__link" title="{{ movie.movie_title }}">
                                 {{ movie.movie_title }}
                             </a>
@@ -57,8 +57,16 @@
             {% endfor %}
         </div>
     </section>
-    {% else %}
-    <p>Log in to access library feature</p>
+</div>
+<div class="pagination">
+    {% if prev %}
+    <a class="pagination_btn" href="{{ url_for('main.genre', genre = genre, page = prevPage) }}">Previous</a>
+    {% endif %} {% for page in range(start, end) %}
+    <a href="{{ url_for('main.genre', genre = genre, page = page) }}" class="{% if page == curPage %}active{% endif %} pagination_btn">
+        {{ page }}
+    </a>
+    {% endfor %} {% if next %}
+    <a class="pagination_btn" href="{{ url_for('main.genre', genre = genre, page = nextPage) }}">Next</a>
     {% endif %}
 </div>
 {% endblock %}

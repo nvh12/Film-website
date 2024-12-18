@@ -60,39 +60,39 @@
           <div class="header__menu">
             <ul class="header__menu--list">
               <li class="header__menu--item">
-                <a href="{{ url_for('index') }}" class="header__menu--link">Home</a>
+                <a href="{{ url_for('main.index') }}" class="header__menu--link">Home</a>
               </li>
               <li class="header__menu--item navbar__genre">
                 <a href="" class="header__menu--link">Genre</a>
                 <ul class="navbar__typelist">
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Action')}}" class="navbar__typelist--link">Action</a>
+                    <a href="{{ url_for('main.genre', genre = 'Action')}}" class="navbar__typelist--link">Action</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Comedy')}}" class="navbar__typelist--link">Comedy</a>
+                    <a href="{{ url_for('main.genre', genre = 'Comedy')}}" class="navbar__typelist--link">Comedy</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Drama')}}" class="navbar__typelist--link">Drama</a>
+                    <a href="{{ url_for('main.genre', genre = 'Drama')}}" class="navbar__typelist--link">Drama</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Horror')}}" class="navbar__typelist--link">Horror</a>
+                    <a href="{{ url_for('main.genre', genre = 'Horror')}}" class="navbar__typelist--link">Horror</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Sci-Fi')}}" class="navbar__typelist--link">Sci-Fi</a>
+                    <a href="{{ url_for('main.genre', genre = 'Sci-Fi')}}" class="navbar__typelist--link">Sci-Fi</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Fantasy')}}" class="navbar__typelist--link">Fantasy</a>
+                    <a href="{{ url_for('main.genre', genre = 'Fantasy')}}" class="navbar__typelist--link">Fantasy</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Romance')}}" class="navbar__typelist--link">Romance</a>
+                    <a href="{{ url_for('main.genre', genre = 'Romance')}}" class="navbar__typelist--link">Romance</a>
                   </li>
                   <li class="navbar__typelist--item">
-                    <a href="{{ url_for('genre', genre = 'Thriller')}}" class="navbar__typelist--link">Thriller</a>
+                    <a href="{{ url_for('main.genre', genre = 'Thriller')}}" class="navbar__typelist--link">Thriller</a>
                   </li>
                 </ul>
               </li>
               <li class="header__menu--item">
-                <a href="{{ url_for('movies')}}" class="header__menu--link">Movies</a>
+                <a href="{{ url_for('main.movies')}}" class="header__menu--link">Movies</a>
               </li>
               <li class="header__menu--item">
                 <a href="https://www.imdb.com/chart/top/" class="header__menu--link">Top IMDB</a>
@@ -107,13 +107,13 @@
             {% if current_user.is_authenticated %}
             <div class="navbar__login-container">
               <div class="navbar__login">
-                <a class="navbar__login--link" href="{{ url_for('library') }}">
+                <a class="navbar__login--link" href="{{ url_for('main.library') }}">
                   <i class="fa-regular fa-user navbar__login--icon"></i>
                   {{ current_user.username }}
                 </a>
               </div>
               <div class="navbar__login">
-                <a class="navbar__login--link" href="{{ url_for('logout')}}">
+                <a class="navbar__login--link" href="{{ url_for('main.logout')}}">
                   Logout
                 </a>
               </div>
