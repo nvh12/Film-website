@@ -34,42 +34,48 @@ def login_register():
 
 #handling likes, dislikes and library movie additions/removal
 def interactions(movie):
-    if request.method == 'POST':
-        if current_user.is_authenticated:
-            if request.is_json:
-                data = request.get_json()
-                action = data.get('action')
-                if action == 'like':
-                    if movie not in current_user.liked_movies:
-                        movie.likes += 1
-                        current_user.liked_movies.append(movie)
-                        if movie in current_user.disliked_movies:
-                            current_user.disliked_movies.remove(movie)
-                            movie.dislikes -= 1
-                        db.session.commit()
-                        return {'message': f'Liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                    else:
-                        return {'message': f'Already liked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'dislike':
-                    if movie not in current_user.disliked_movies:
-                        movie.dislikes += 1
-                        current_user.disliked_movies.append(movie)
-                        if movie in current_user.liked_movies:
-                            current_user.liked_movies.remove(movie)
-                            movie.likes -= 1
-                        db.session.commit()
-                        return {'message': f'Disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                    else:
-                        return {'message': f'Already disliked!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'add':
-                    if movie not in current_user.movies:
-                        current_user.movies.append(movie)
-                        db.session.commit()
-                        return {'message': f'Movie added to library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-                elif action == 'remove':
-                    if movie in current_user.movies:
-                        current_user.movies.remove(movie)
-                        db.session.commit()
-                        return {'message': f'Movie removed from library!', 'likes': movie.likes, 'dislikes': movie.dislikes, 'action': action}
-        else:
-            return {'message': f'Log in to access features', 'likes': movie.likes, 'dislikes': movie.dislikes}
+    if request.method == 'POST' and request.is_json:
+        if not current_user.is_authenticated:
+            return {'message': 'Log in to access features', 'likes': movie.likes, 'dislikes': movie.dislikes}
+        data = request.get_json()
+        action = data.get('action')
+        message = ''
+        if action == 'like':
+            if movie not in current_user.liked_movies:
+                movie.likes += 1
+                current_user.liked_movies.append(movie)
+                if movie in current_user.disliked_movies:
+                    current_user.disliked_movies.remove(movie)
+                    movie.dislikes -= 1
+                message = f'Liked!'
+            else:
+                message = f'Already liked!'
+        elif action == 'dislike':
+            if movie not in current_user.disliked_movies:
+                movie.dislikes += 1
+                current_user.disliked_movies.append(movie)
+                if movie in current_user.liked_movies:
+                    current_user.liked_movies.remove(movie)
+                    movie.likes -= 1
+                message = f'Disliked!'
+            else:
+                message = f'Already disliked!'
+        elif action == 'add':
+            if movie not in current_user.movies:
+                current_user.movies.append(movie)
+                message = f'Movie added to library!'
+            else:
+                message = f'Movie already in library!'
+        elif action == 'remove':
+            if movie in current_user.movies:
+                current_user.movies.remove(movie)
+                message = f'Movie removed from library!'
+            else:
+                message = f'Movie not in library!'
+        db.session.commit()
+        return {
+            'message': message,
+            'likes': movie.likes,
+            'dislikes': movie.dislikes,
+            'action': action,
+        }

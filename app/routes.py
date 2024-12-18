@@ -20,7 +20,7 @@ def index():
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     mostRecent = Movie.query.order_by(desc(Movie.release_date)).limit(16).all()
     mostLiked = Movie.query.order_by(desc(Movie.likes)).limit(16).all()
     mostDisliked = Movie.query.order_by(desc(Movie.dislikes)).limit(16).all()
@@ -45,7 +45,7 @@ def recovery():
                 email_sending.send(code, [emailForm.email.data])
                 flash('A recovery code has been sent to your email.', 'info')
                 session['step'] = 2
-                return redirect(url_for('recovery'))
+                return redirect(url_for('main.recovery'))
             else:
                 flash('Email address is not associated with any account!', 'info')
         return render_template('recovery.html', registerForm = registerForm, loginForm = loginForm, form = emailForm, step = 1)
@@ -61,7 +61,7 @@ def recovery():
                 db.session.commit()
                 session.clear()
                 flash('Account updated!', 'info')
-                return redirect(url_for('index'))
+                return redirect(url_for('main.index'))
             else:
                 flash('Incorrect or expired recovery code!', 'info')
         return render_template('recovery.html', registerForm = registerForm, loginForm = loginForm, form = resetForm, step = 2)
@@ -75,14 +75,14 @@ def reset_recovery():
 def logout():
     logout_user()
     flash('You have been logged out!', category = 'info')
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 @main_bp.route('/results', methods = ['POST', 'GET'])
 def results():
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     keywords = request.args.get('keywords')
     list = Movie.query.filter(Movie.movie_title.ilike(f"%{keywords}%")).all()
     return render_template('results.html', list = list, registerForm = registerForm, loginForm = loginForm)
@@ -93,7 +93,7 @@ def movies():
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     noMovies = 48
     page = request.args.get('page', default = 1, type  = int)
     movieQuery = Movie.query.paginate(page = page, per_page = noMovies, error_out = False)
@@ -117,7 +117,7 @@ def genre(genre):
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     noMovies = 48
     page = request.args.get('page', default = 1, type  = int)
     genreList = Movie.query.filter(Movie.genres.ilike(f"%{genre}%")).paginate(page=page, per_page=noMovies, error_out=False)
@@ -141,7 +141,7 @@ def watching(movie_title):
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     title = unquote(movie_title)
     movie = Movie.query.filter_by(movie_title = title).first()
     path = f"videos/{movie.id}.mp4"
@@ -157,7 +157,7 @@ def description(movie_title):
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     title = unquote(movie_title)
     movie = Movie.query.filter_by(movie_title = title).first()
     if not movie:
@@ -176,5 +176,5 @@ def library():
     loginForm, registerForm = login_register()
     keywords = request.args.get('search')
     if keywords:
-        return redirect(url_for('results', keywords = keywords))
+        return redirect(url_for('main.results', keywords = keywords))
     return render_template('library.html', registerForm = registerForm, loginForm = loginForm, library = library)
