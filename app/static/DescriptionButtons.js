@@ -1,24 +1,17 @@
-const likeButton = document.getElementById('like');
-const dislikeButton = document.getElementById('dislike');
-const libraryButton = document.getElementById('libraryButton');
+const actionButtons = [
+    document.getElementById('like'),
+    document.getElementById('dislike'),
+    document.getElementById('libraryButton')
+];
 
-likeButton.addEventListener('click', function () {
-    movieTitle = this.getAttribute('data-movie-title');
-    state = this.getAttribute('state');
-    sendAction(movieTitle, 'like', state);
+actionButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const movieTitle = this.getAttribute('data-movie-title');
+        const action = this.getAttribute('action');
+        const state = this.getAttribute('state');
+        sendAction(movieTitle, action, state);
+    });
 });
-dislikeButton.addEventListener('click', function () {
-    movieTitle = this.getAttribute('data-movie-title');
-    state = this.getAttribute('state');
-    sendAction(movieTitle, 'dislike', state);
-});
-libraryButton.addEventListener('click', function () {
-    movieTitle = this.getAttribute('data-movie-title');
-    action = this.getAttribute('action');
-    state = this.getAttribute('state');
-    sendAction(movieTitle, action, state);
-});
-
 
 function flashMessage(message, category = 'info') {
     const messageDiv = document.createElement('div');
@@ -66,15 +59,7 @@ function sendAction(movieTitle, action, state) {
             .then(response => response.json())
             .then(data => {
                 flashMessage(data.message, 'success');
-                const reactionElement = document.getElementById(`movie-reactions`);
-                reactionElement.textContent = `Likes: ${data.likes} | Dislikes: ${data.dislikes}`;
-                if (action === 'add') {
-                    libraryButton.setAttribute('action', 'remove');
-                    libraryButton.innerHTML = '<i class="fa-solid fa-plus"></i> Remove from library';
-                } else if (action === 'remove') {
-                    libraryButton.setAttribute('action', 'add');
-                    libraryButton.innerHTML = '<i class="fa-solid fa-plus"></i> Add to library';
-                }
+                updatePage(data, action);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -83,5 +68,17 @@ function sendAction(movieTitle, action, state) {
     }
     else{
         flashMessage('Log in to access features', 'info');
+    }
+}
+
+function updatePage(data, action){
+    const reactionElement = document.getElementById(`movie-reactions`);
+    reactionElement.textContent = `Likes: ${data.likes} | Dislikes: ${data.dislikes}`;
+    if (action === 'add') {
+        libraryButton.setAttribute('action', 'remove');
+        libraryButton.innerHTML = '<i class="fa-solid fa-plus"></i> Remove from library';
+    } else if (action === 'remove') {
+        libraryButton.setAttribute('action', 'add');
+        libraryButton.innerHTML = '<i class="fa-solid fa-plus"></i> Add to library';
     }
 }

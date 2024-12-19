@@ -34,8 +34,8 @@
                     <img style="border-radius: 10px; width: 178px; height: 268px;" src="{{ movie.poster_url }}" alt="">
                 </div>
                 <div class="details__vote" id="movie-reactions">Likes: {{ movie.likes }} | Dislikes {{ movie.dislikes }}</div>
-                <button class="details__like" id="like" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-up"></i> Like</button>
-                <button class="details__dislike" id="dislike" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
+                <button class="details__like" id="like" action="like" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+                <button class="details__dislike" id="dislike" action="dislike" data-movie-title="{{ movie.movie_title|urlencode }}" state = "{{ current_user.is_authenticated }}"><i class="fa-solid fa-thumbs-down"></i> Dislike</button>
             </div>
             <div class="details__right">
                 <div class="details__watch">

@@ -65,10 +65,10 @@
     } else {
         window.isReloading = true;
     }
-    window.addEventListener('beforeunload', () => {
-        if (!window.isReloading) {
-            navigator.sendBeacon('/reset_recovery');
-            sessionStorage.removeItem('visited');
+    window.addEventListener('pagehide', (event) => {
+        if (!event.persisted && !window.isReloading) {
+            navigator.sendBeacon('/reset_recovery'); 
+            sessionStorage.removeItem('visited'); 
         }
     });
 </script>
