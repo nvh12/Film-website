@@ -399,6 +399,7 @@
 }
 
 .details__like {
+  cursor: pointer;
   width: 47%;
   height: 30px;
   border: none;
@@ -409,11 +410,12 @@
 }
 
 .details__dislike {
+  cursor: pointer;
   width: 47%;
   height: 30px;
   border: none;
   border-radius: 5px;
-  background-color: gray;
+  background-color: rgb(200 200 200);
 }
 
 .details__poster {
@@ -441,6 +443,7 @@
 }
 
 .details__watchnow {
+  cursor: pointer;
   height: 40px;
   width: 130px;
   border-radius: 20px;
@@ -451,6 +454,7 @@
   margin-bottom: 15px;
 }
 .details__add {
+  cursor: pointer;
   height: 40px;
   width: 150px;
   border-radius: 20px;

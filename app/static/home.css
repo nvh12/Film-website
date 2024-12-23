@@ -240,6 +240,10 @@
   gap: 10px;
 }
 
+.social a{
+  text-decoration: none;
+}
+
 .social__label {
   color: #555;
   display: inline-block;
