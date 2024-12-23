@@ -1,92 +1,95 @@
-{% extends 'base.html' %}
-
-{% block head %}
+{% extends 'base.html' %} {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename = 'home.css')}}" />
 <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename = 'recovery.css')}}"
+/>
 <title>Recovery</title>
-{% endblock %}
-
-{% block content %}
-<h2>Account recovery</h2>
-{% if step == 1 %}
-<form method="POST" style="display: flex; flex-direction: column; gap: 20px">
+{% endblock %} {% block content %}
+<h2 class="recovery__account">Account recovery</h2>
+<div class="recovery__content">
+  {% if step == 1 %}
+  <form
+    class="recovery__form"
+    method="POST"
+    style="display: flex; flex-direction: column; gap: 20px"
+  >
     {{ form.hidden_tag() }}
     <div style="display: flex; flex-direction: column">
-        {{ form.email.label(style="color: #333; font-weight: bold;
-        margin-bottom: 5px;") }} {{
-        form.email(class="form-control", placeholder="Enter
-        Email", style="padding: 10px; border-radius: 5px; border: 1px
-        solid #ced4da;") }}
+      {{ form.email.label(style="color: #333; font-weight: bold; margin-bottom:
+      5px;") }} {{ form.email(class="form-control", placeholder="Enter Email",
+      style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
     </div>
     {{ form.submit(class="btn btn-primary", style="padding: 10px;
-    background-color: #007bff; border: none; border-radius: 5px; color:
-    white; cursor: pointer; font-size: 16px")}}
-</form>
-{% elif step == 2 %}
-<form method="POST" style="display: flex; flex-direction: column; gap: 20px">
+    background-color: #007bff; border: none; border-radius: 5px; color: white;
+    cursor: pointer; font-size: 16px")}}
+  </form>
+  {% elif step == 2 %}
+  <form
+    class="recovery__form"
+    method="POST"
+    style="display: flex; flex-direction: column; gap: 20px"
+  >
     {{ form.hidden_tag() }}
     <div style="display: flex; flex-direction: column">
-        {{ form.code.label(style="color: #333; font-weight: bold;
-        margin-bottom: 5px;") }} {{
-        form.code(class="form-control", placeholder="Enter
-        Code", style="padding: 10px; border-radius: 5px; border: 1px
-        solid #ced4da;") }}
+      {{ form.code.label(style="color: #333; font-weight: bold; margin-bottom:
+      5px;") }} {{ form.code(class="form-control", placeholder="Enter Code",
+      style="padding: 10px; border-radius: 5px; border: 1px solid #ced4da;") }}
     </div>
     <div style="display: flex; flex-direction: column">
-        {{ form.username.label(style="color: #333; font-weight: bold;
-        margin-bottom: 5px;") }} {{
-        form.username(class="form-control", placeholder="Enter
-        Username", style="padding: 10px; border-radius: 5px; border: 1px
-        solid #ced4da;") }}
+      {{ form.username.label(style="color: #333; font-weight: bold;
+      margin-bottom: 5px;") }} {{ form.username(class="form-control",
+      placeholder="Enter Username", style="padding: 10px; border-radius: 5px;
+      border: 1px solid #ced4da;") }}
     </div>
     <div style="display: flex; flex-direction: column">
-        {{ form.password1.label(style="color: #333; font-weight:
-        bold; margin-bottom: 5px;") }} {{
-        form.password1(class="form-control", placeholder="Enter
-        Password", style="padding: 10px; border-radius: 5px; border: 1px
-        solid #ced4da;") }}
-      </div>
+      {{ form.password1.label(style="color: #333; font-weight: bold;
+      margin-bottom: 5px;") }} {{ form.password1(class="form-control",
+      placeholder="Enter Password", style="padding: 10px; border-radius: 5px;
+      border: 1px solid #ced4da;") }}
+    </div>
 
-      <div style="display: flex; flex-direction: column">
-        {{ form.password2.label(style="color: #333; font-weight:
-        bold; margin-bottom: 5px;") }} {{
-        form.password2(class="form-control", placeholder="Confirm
-        Password", style="padding: 10px; border-radius: 5px; border: 1px
-        solid #ced4da;") }}
-      </div>
+    <div style="display: flex; flex-direction: column">
+      {{ form.password2.label(style="color: #333; font-weight: bold;
+      margin-bottom: 5px;") }} {{ form.password2(class="form-control",
+      placeholder="Confirm Password", style="padding: 10px; border-radius: 5px;
+      border: 1px solid #ced4da;") }}
+    </div>
     {{ form.submit(class="btn btn-primary", style="padding: 10px;
-    background-color: #007bff; border: none; border-radius: 5px; color:
-    white; cursor: pointer; font-size: 16px")}}
-</form>
-{% endif %}
-<script>
-    if (!sessionStorage.getItem('recoveryInProgress')) {
-    sessionStorage.setItem('recoveryInProgress', 'true');
-}
+    background-color: #007bff; border: none; border-radius: 5px; color: white;
+    cursor: pointer; font-size: 16px")}}
+  </form>
+  {% endif %}
+  <script>
+    if (!sessionStorage.getItem("recoveryInProgress")) {
+      sessionStorage.setItem("recoveryInProgress", "true");
+    }
 
-// Track if we're handling a form submission
-let isSubmitting = false;
+    // Track if we're handling a form submission
+    let isSubmitting = false;
 
-// Add this to your form submit handlers
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', () => {
+    // Add this to your form submit handlers
+    document.querySelectorAll("form").forEach((form) => {
+      form.addEventListener("submit", () => {
         isSubmitting = true;
+      });
     });
-});
 
-window.addEventListener('pagehide', (event) => {
-    if (!event.persisted && !window.isReloading && !isSubmitting) {
-        navigator.sendBeacon('/reset_recovery');
-        sessionStorage.removeItem('recoveryInProgress');
-    }
-});
+    window.addEventListener("pagehide", (event) => {
+      if (!event.persisted && !window.isReloading && !isSubmitting) {
+        navigator.sendBeacon("/reset_recovery");
+        sessionStorage.removeItem("recoveryInProgress");
+      }
+    });
 
-// Optional: Handle the case where user navigates away without submitting
-window.addEventListener('beforeunload', (event) => {
-    if (!isSubmitting) {
-        navigator.sendBeacon('/reset_recovery');
-        sessionStorage.removeItem('recoveryInProgress');
-    }
-});
-</script>
-{% endblock %}
+    // Optional: Handle the case where user navigates away without submitting
+    window.addEventListener("beforeunload", (event) => {
+      if (!isSubmitting) {
+        navigator.sendBeacon("/reset_recovery");
+        sessionStorage.removeItem("recoveryInProgress");
+      }
+    });
+  </script>
+  {% endblock %}
+</div>

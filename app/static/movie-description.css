@@ -208,6 +208,10 @@
   z-index: 2;
 }
 
+.d_play:hover {
+  opacity: 0.8;
+}
+
 .d_play i {
   line-height: 100px;
   font-size: 40px;
@@ -406,7 +410,8 @@
   border-radius: 5px;
   margin-right: 2%;
   color: white;
-  background-color: #28a745;
+  background-color: rgb(200 200 200);
+  opacity: 0.9;
 }
 
 .details__dislike {
@@ -416,6 +421,17 @@
   border: none;
   border-radius: 5px;
   background-color: rgb(200 200 200);
+  opacity: 0.9;
+}
+.details__dislike:hover,
+.details__like:hover {
+  opacity: 1;
+}
+
+/* CSS for like and dislike active */
+
+.activedLikeandDislike {
+  background-color: #28a745; /* Màu khi active */
 }
 
 .details__poster {
@@ -453,13 +469,23 @@
   font-size: 15px;
   margin-bottom: 15px;
 }
+
+.details__watchnow:hover {
+  opacity: 0.8;
+}
 .details__add {
+  color: white;
   cursor: pointer;
   height: 40px;
   width: 150px;
   border-radius: 20px;
   border: none;
   font-size: 15px;
+  background-color: #28a745;
+  opacity: 1;
+}
+.details__add:hover {
+  opacity: 0.8;
 }
 .details__review {
   display: flex;

@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'base.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename = 'movie-watching.css')}}"
+    />
+    {% block head %} {% endblock %}
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-    integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css')}}" />
-  <link rel="stylesheet" href="{{ url_for('static', filename = 'movie-watching.css')}}" />
-  {% block head %} {% endblock %}
-</head>
-
-<body>
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %} {% for category, message in messages %}
-  <div class="alert alert-{{ category }}" style="
+  <body>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div
+      class="alert alert-{{ category }}"
+      style="
         position: fixed;
         top: 0;
         z-index: 9999;
@@ -37,248 +53,346 @@
         align-items: center;
         animation: fadeout 5s forwards;
         max-width: 100%;
-      ">
-    <button type="button" class="close-btn" aria-label="Close" onclick="this.parentElement.style.display='none';" style="
+      "
+    >
+      <button
+        type="button"
+        class="close-btn"
+        aria-label="Close"
+        onclick="this.parentElement.style.display='none';"
+        style="
           background: none;
           border: none;
           color: white;
           cursor: pointer;
           margin-left: 0px;
-        ">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    {{ message }}
-  </div>
-  {% endfor %} {% endif %} {% endwith %}
-  <div class="app">
-    <div class="header">
-      <div class="grid">
-        <div class="header__wrapper">
-          <div class="header__logo">
-            <img src="/static/images/logo.png" alt="logo" class="header__logo--img" />
-          </div>
-          <div class="header__menu">
-            <ul class="header__menu--list">
-              <li class="header__menu--item">
-                <a href="{{ url_for('main.index') }}" class="header__menu--link">Home</a>
-              </li>
-              <li class="header__menu--item navbar__genre">
-                <a href="" class="header__menu--link">Genre</a>
-                <ul class="navbar__typelist">
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Action')}}" class="navbar__typelist--link">Action</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Comedy')}}" class="navbar__typelist--link">Comedy</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Drama')}}" class="navbar__typelist--link">Drama</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Horror')}}" class="navbar__typelist--link">Horror</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Sci-Fi')}}" class="navbar__typelist--link">Sci-Fi</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Fantasy')}}" class="navbar__typelist--link">Fantasy</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Romance')}}" class="navbar__typelist--link">Romance</a>
-                  </li>
-                  <li class="navbar__typelist--item">
-                    <a href="{{ url_for('main.genre', genre = 'Thriller')}}" class="navbar__typelist--link">Thriller</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="header__menu--item">
-                <a href="{{ url_for('main.movies')}}" class="header__menu--link">Movies</a>
-              </li>
-              <li class="header__menu--item">
-                <a href="https://www.imdb.com/chart/top/" class="header__menu--link">Top IMDB</a>
-              </li>
-            </ul>
-          </div>
-          <div class="header__right">
-            <form action="" class="header__right--search" method="get">
-              <i class="fa-solid fa-magnifying-glass header__right--search-icon"></i>
-              <input type="text" class="header__right--input" name="search" placeholder="Enter keywords" />
-            </form>
-            {% if current_user.is_authenticated %}
-            <div class="navbar__login-container">
-              <div class="navbar__login">
-                <a class="navbar__login--link" href="{{ url_for('main.library') }}">
-                  <i class="fa-regular fa-user navbar__login--icon"></i>
-                  {{ current_user.username }}
-                </a>
-              </div>
-              <div class="navbar__login">
-                <a class="navbar__login--link" href="{{ url_for('main.logout')}}">
-                  Logout
-                </a>
-              </div>
-            </div>
-            {% else %}
-            <div class="navbar__login-container">
-              <div class="navbar__login">
-                <button class="navbar__login--link" id="loginBtn">
-                  <i class="fa-regular fa-user navbar__login--icon"></i>
-                  Login
-                </button>
-              </div>
-              <div class="navbar__login">
-                <button class="navbar__login--link" id="registerBtn">
-                  <i class="fa-regular fa-user navbar__login--icon"></i>
-                  Register
-                </button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="content">{% block content %} {% endblock %}</div>
-    <div class="footer">
-      <div class="f-container">
-        <div class="f-logo">
-          <img src="https://zoechip.cc/images/group_1/theme_3/logo.png?v=0.1" class="logo" />
-          <p>©Group9</p>
-        </div>
-        <div class="f-about">
-          <div class="f-text">
-            This website is a Free Movies streaming site with zero ads. We let
-            you watch movies online without having to register or paying, with
-            over 10000 movies and TV-Series. You can also Download full movies
-            from this website and watch it later if you want.
-          </div>
-          <div class="f-menu">
-            Android App - Terms of service - Contact - Sitemap - FAQ
-          </div>
-        </div>
-        <div class="f-notice">
-          <span class="f-notice-span">We does not store any files on our server, we only linked to the
-            media which is hosted on 3rd party services.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal hidden" id="loginForm">
-    <div class="modal__form">
-      <button type="button" class="closeButton" id="closeLoginForm">
-        <i class="fa-solid fa-x"></i>
+        "
+      >
+        <span aria-hidden="true">&times;</span>
       </button>
-      <div class="container" style="
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
+    <div class="app">
+      <div class="header">
+        <div class="grid">
+          <div class="header__wrapper">
+            <div class="header__logo">
+              <img
+                src="/static/images/logo.png"
+                alt="logo"
+                class="header__logo--img"
+              />
+            </div>
+            <div class="header__menu">
+              <ul class="header__menu--list">
+                <li class="header__menu--item">
+                  <a
+                    href="{{ url_for('main.index') }}"
+                    class="header__menu--link"
+                    >Home</a
+                  >
+                </li>
+                <li class="header__menu--item navbar__genre">
+                  <a href="" class="header__menu--link">Genre</a>
+                  <ul class="navbar__typelist">
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Action')}}"
+                        class="navbar__typelist--link"
+                        >Action</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Comedy')}}"
+                        class="navbar__typelist--link"
+                        >Comedy</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Drama')}}"
+                        class="navbar__typelist--link"
+                        >Drama</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Horror')}}"
+                        class="navbar__typelist--link"
+                        >Horror</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Sci-Fi')}}"
+                        class="navbar__typelist--link"
+                        >Sci-Fi</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Fantasy')}}"
+                        class="navbar__typelist--link"
+                        >Fantasy</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Romance')}}"
+                        class="navbar__typelist--link"
+                        >Romance</a
+                      >
+                    </li>
+                    <li class="navbar__typelist--item">
+                      <a
+                        href="{{ url_for('main.genre', genre = 'Thriller')}}"
+                        class="navbar__typelist--link"
+                        >Thriller</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li class="header__menu--item">
+                  <a
+                    href="{{ url_for('main.movies')}}"
+                    class="header__menu--link"
+                    >Movies</a
+                  >
+                </li>
+                <li class="header__menu--item">
+                  <a
+                    href="https://www.imdb.com/chart/top/"
+                    class="header__menu--link"
+                    >Top IMDB</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="header__right">
+              <form action="" class="header__right--search" method="get">
+                <i
+                  class="fa-solid fa-magnifying-glass header__right--search-icon"
+                ></i>
+                <input
+                  type="text"
+                  class="header__right--input"
+                  name="search"
+                  placeholder="Enter keywords"
+                />
+              </form>
+              {% if current_user.is_authenticated %}
+              <div class="navbar__login-container">
+                <div class="navbar__login">
+                  <a
+                    class="navbar__login--link"
+                    href="{{ url_for('main.library') }}"
+                  >
+                    <i class="fa-regular fa-user navbar__login--icon"></i>
+                    {{ current_user.username }}
+                  </a>
+                </div>
+                <div class="navbar__login">
+                  <a
+                    class="navbar__login--link"
+                    href="{{ url_for('main.logout')}}"
+                  >
+                    Logout
+                  </a>
+                </div>
+              </div>
+              {% else %}
+              <div class="navbar__login-container">
+                <div class="navbar__login">
+                  <button class="navbar__login--link" id="loginBtn">
+                    <i class="fa-regular fa-user navbar__login--icon"></i>
+                    Login
+                  </button>
+                </div>
+                <div class="navbar__login">
+                  <button class="navbar__login--link" id="registerBtn">
+                    <i class="fa-regular fa-user navbar__login--icon"></i>
+                    Register
+                  </button>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content">{% block content %} {% endblock %}</div>
+      <div class="footer">
+        <div class="f-container">
+          <div class="f-logo">
+            <img
+              src="https://zoechip.cc/images/group_1/theme_3/logo.png?v=0.1"
+              class="logo"
+            />
+            <p>©Group9</p>
+          </div>
+          <div class="f-about">
+            <div class="f-text">
+              This website is a Free Movies streaming site with zero ads. We let
+              you watch movies online without having to register or paying, with
+              over 10000 movies and TV-Series. You can also Download full movies
+              from this website and watch it later if you want.
+            </div>
+            <div class="f-menu">
+              Android App - Terms of service - Contact - Sitemap - FAQ
+            </div>
+          </div>
+          <div class="f-notice">
+            <span class="f-notice-span"
+              >We does not store any files on our server, we only linked to the
+              media which is hosted on 3rd party services.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal hidden" id="loginForm">
+      <div class="modal__form">
+        <button type="button" class="closeButton" id="closeLoginForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <div
+          class="container"
+          style="
             max-width: 400px;
             margin: auto;
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-          ">
-        <h2 style="text-align: center; color: #333">Login</h2>
-        <form method="POST" class="form-signin" style="display: flex; flex-direction: column; gap: 20px">
-          {{ loginForm.hidden_tag() }}
-          <div style="display: flex; flex-direction: column">
-            {{ loginForm.username.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            loginForm.username(class="form-control", placeholder="Enter
-            Username", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+          "
+        >
+          <h2 style="text-align: center; color: #333">Login</h2>
+          <form
+            method="POST"
+            class="form-signin"
+            style="display: flex; flex-direction: column; gap: 20px"
+          >
+            {{ loginForm.hidden_tag() }}
+            <div style="display: flex; flex-direction: column">
+              {{ loginForm.username.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              loginForm.username(class="form-control", placeholder="Enter
+              Username", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ loginForm.password.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            loginForm.password(class="form-control", placeholder="Enter
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ loginForm.password.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              loginForm.password(class="form-control", placeholder="Enter
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <button type="button" id="changeToRegisterButton" style="
+            <button
+              type="button"
+              id="changeToRegisterButton"
+              style="
                 display: flex;
                 flex-direction: column;
                 border: none;
                 background-color: white;
                 cursor: pointer;
-              " class>
-            Don't have an account? Register
-          </button>
-          <a href="{{ url_for('main.recovery')}}">Forgot username or password? Recover with email</a>
+              "
+              class
+            >
+              Don't have an account? Register
+            </button>
+            <a href="{{ url_for('main.recovery')}}"
+              >Forgot username or password? Recover with email</a
+            >
 
-          {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
-          background-color: #007bff; border: none; border-radius: 5px; color:
-          white; cursor: pointer; font-size: 16px")}}
-        </form>
+            {{ loginForm.submit(class="btn btn-primary", style="padding: 10px;
+            background-color: #007bff; border: none; border-radius: 5px; color:
+            white; cursor: pointer; font-size: 16px")}}
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="modal hidden" id="registerForm">
-    <div class="modal__form">
-      <button type="button" class="closeButton" id="closeRegisterForm">
-        <i class="fa-solid fa-x"></i>
-      </button>
-      <div class="container" style="
+    <div class="modal hidden" id="registerForm">
+      <div class="modal__form">
+        <button type="button" class="closeButton" id="closeRegisterForm">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <div
+          class="container"
+          style="
             max-width: 400px;
             margin: auto;
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-          ">
-        <h2 style="text-align: center; color: #333">Create Account</h2>
-        <form method="POST" class="form-register" style="display: flex; flex-direction: column; gap: 20px">
-          {{ registerForm.hidden_tag() }}
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.username.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.username(class="form-control", placeholder="Enter
-            Username", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+          "
+        >
+          <h2 style="text-align: center; color: #333">Create Account</h2>
+          <form
+            method="POST"
+            class="form-register"
+            style="display: flex; flex-direction: column; gap: 20px"
+          >
+            {{ registerForm.hidden_tag() }}
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.username.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.username(class="form-control", placeholder="Enter
+              Username", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.email.label(style="color: #333; font-weight: bold;
-            margin-bottom: 5px;") }} {{
-            registerForm.email(class="form-control", placeholder="Enter
-            Email", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.email.label(style="color: #333; font-weight: bold;
+              margin-bottom: 5px;") }} {{
+              registerForm.email(class="form-control", placeholder="Enter
+              Email", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.password1.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.password1(class="form-control", placeholder="Enter
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.password1.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.password1(class="form-control", placeholder="Enter
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <div style="display: flex; flex-direction: column">
-            {{ registerForm.password2.label(style="color: #333; font-weight:
-            bold; margin-bottom: 5px;") }} {{
-            registerForm.password2(class="form-control", placeholder="Confirm
-            Password", style="padding: 10px; border-radius: 5px; border: 1px
-            solid #ced4da;") }}
-          </div>
+            <div style="display: flex; flex-direction: column">
+              {{ registerForm.password2.label(style="color: #333; font-weight:
+              bold; margin-bottom: 5px;") }} {{
+              registerForm.password2(class="form-control", placeholder="Confirm
+              Password", style="padding: 10px; border-radius: 5px; border: 1px
+              solid #ced4da;") }}
+            </div>
 
-          <button type="button" id="changeToLoginButton" style="
+            <button
+              type="button"
+              id="changeToLoginButton"
+              style="
                 display: flex;
                 flex-direction: column;
                 border: none;
                 background-color: white;
                 cursor: pointer;
-              ">
-            Already have an account? Login
-          </button>
+              "
+            >
+              Already have an account? Login
+            </button>
 
-          {{ registerForm.submit(class="btn btn-primary", style="padding:
-          10px; background-color: #007bff; border: none; border-radius: 5px;
-          color: white; cursor: pointer; font-size: 16px")}}
-        </form>
+            {{ registerForm.submit(class="btn btn-primary", style="padding:
+            10px; background-color: #007bff; border: none; border-radius: 5px;
+            color: white; cursor: pointer; font-size: 16px")}}
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <script src="{{ url_for('static', filename = 'LoginRegisterPopUp.js')}}"></script>
-</body>
-
+    <script src="{{ url_for('static', filename = 'LoginRegisterPopUp.js')}}"></script>
+    <script src="{{ url_for('static', filename = 'LikeandDislikeButtons.js')}}"></script>
+  </body>
 </html>

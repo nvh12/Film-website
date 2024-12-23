@@ -1,12 +1,11 @@
-{% extends 'base.html' %}
-
-{% block head %}
+{% extends 'base.html' %} {% block head %}
 <title>Watching</title>
-<link rel="stylesheet" href="{{ url_for('static', filename = 'movie-watching.css')}}" />
-{% endblock %}
-
-{% block content %}
-<br>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename = 'movie-watching.css')}}"
+/>
+{% endblock %} {% block content %}
+<br />
 <div class="vd-prebread">
   <li class="vd-prelist">
     <a href="{{ url_for('main.index')}}" title="Home">Home /</a>
@@ -15,7 +14,10 @@
     <a href="{{ url_for('main.movies')}}" title="Movies">Movies /</a>
   </li>
   <li class="vd-prelist">
-    <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" title="{{ movie.movie_title }}">
+    <a
+      href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}"
+      title="{{ movie.movie_title }}"
+    >
       {{ movie.movie_title }}
     </a>
   </li>
@@ -26,7 +28,7 @@
     Trình duyệt của bạn không hỗ trợ thẻ video.
   </video>
 </div>
-<br>
+<br />
 <div class="grid">
   <section class="film-area">
     <div class="film-area__header">
@@ -39,9 +41,15 @@
         <a href="" class="film">
           <div class="film__poster">
             <div class="film__quality">HD</div>
-            <img src="{{ movie.poster_url }}" alt="{{ movie.movie_title }}" class="film__img" />
-            <a href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
-              title="{{ movie.movie_title }}">
+            <img
+              src="{{ movie.poster_url }}"
+              alt="{{ movie.movie_title }}"
+              class="film__img"
+            />
+            <a
+              href="{{ url_for('main.watching', movie_title=movie.movie_title|urlencode) }}"
+              title="{{ movie.movie_title }}"
+            >
               <div class="film__play">
                 <i class="fa fa-play"></i>
               </div>
@@ -49,8 +57,11 @@
           </div>
           <div class="film__details">
             <h3 class="film__name">
-              <a href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}" class="film__link"
-                title="{{ movie.movie_title }}">
+              <a
+                href="{{ url_for('main.description', movie_title=movie.movie_title|urlencode) }}"
+                class="film__link"
+                title="{{ movie.movie_title }}"
+              >
                 {{ movie.movie_title }}
               </a>
             </h3>
@@ -76,4 +87,5 @@
     </div>
   </section>
 </div>
+
 {% endblock %}

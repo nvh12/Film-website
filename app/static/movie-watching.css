@@ -160,6 +160,10 @@
   display: inline-block;
 }
 
+.vd-prelist a:hover {
+  color: #2ebc5f;
+}
+
 .vd-prelist a {
   font-family: Arial, Helvetica, sans-serif;
   color: black;
@@ -179,7 +183,6 @@
   padding: 40px 0;
   color: #b9b9b9;
   position: relative;
-
 }
 
 .f-container {
@@ -213,8 +216,6 @@
   padding: 10px;
   line-height: 1.3em;
 }
-
-
 
 .f-logo {
   display: inline-block;
