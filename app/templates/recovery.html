@@ -60,16 +60,33 @@
 </form>
 {% endif %}
 <script>
-    if (!sessionStorage.getItem('visited')) {
-        sessionStorage.setItem('visited', 'true');
-    } else {
-        window.isReloading = true;
-    }
-    window.addEventListener('pagehide', (event) => {
-        if (!event.persisted && !window.isReloading) {
-            navigator.sendBeacon('/reset_recovery'); 
-            sessionStorage.removeItem('visited'); 
-        }
+    if (!sessionStorage.getItem('recoveryInProgress')) {
+    sessionStorage.setItem('recoveryInProgress', 'true');
+}
+
+// Track if we're handling a form submission
+let isSubmitting = false;
+
+// Add this to your form submit handlers
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', () => {
+        isSubmitting = true;
     });
+});
+
+window.addEventListener('pagehide', (event) => {
+    if (!event.persisted && !window.isReloading && !isSubmitting) {
+        navigator.sendBeacon('/reset_recovery');
+        sessionStorage.removeItem('recoveryInProgress');
+    }
+});
+
+// Optional: Handle the case where user navigates away without submitting
+window.addEventListener('beforeunload', (event) => {
+    if (!isSubmitting) {
+        navigator.sendBeacon('/reset_recovery');
+        sessionStorage.removeItem('recoveryInProgress');
+    }
+});
 </script>
 {% endblock %}

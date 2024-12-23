@@ -1,11 +1,11 @@
 from flask_mail import Mail, Message
 from flask import render_template
 
-mail = Mail()
+mail = Mail()                           
 
 def init(app):
-    mail.init_app(app)
-
+    mail.init_app(app)     
+                            
 def send(code, recipients):
     content = render_template('email.html', code = code)
     try:
