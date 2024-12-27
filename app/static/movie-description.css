@@ -431,7 +431,7 @@
 /* CSS for like and dislike active */
 
 .activedLikeandDislike {
-  background-color: rgba(39, 236, 245, 0.8); /* Màu khi active */
+  background-color: #28a745; /* Màu khi active */
 }
 
 .details__poster {
