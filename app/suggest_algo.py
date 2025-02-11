@@ -55,16 +55,13 @@ class Onehotencoding:
         return document.split(", ")
 
 class Suggestion:
-    def distance(self, vector):
-        return np.linalg.norm(vector)
-    
     def get_suggestion(self, movie, movie_db, X, vectorizer):
         comb = movie['comb'].iloc[0]
         vector = vectorizer.transform([comb])[0]
         distances = []
         movieID = movie_db['movie_title']
         for i in movieID.index:
-            distances.append([self.distance(X[i] - vector), movieID[i]])
+            distances.append([np.sum(np.bitwise_xor(X[i], vector)), movieID[i]])
         distances.sort()
         return [distances[i][1] for i in range(1,17)]
 
